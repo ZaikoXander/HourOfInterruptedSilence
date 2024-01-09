@@ -8,6 +8,8 @@ import useTimer from './hooks/useTimer'
 import OneHourRandomAudioMomentsGenerator from './classes/oneHourRandomAudioMomentsGenerator'
 import extractYoutubeVideoId from './utils/extractYoutubeVideoId'
 
+import { FaGithub } from 'react-icons/fa'
+
 const ONE_HOUR_IN_SECONDS = 3600
 const TIMER_FORMAT_LENGTH = 2
 const TIMER_FORMAT_PADDING = '0'
@@ -168,6 +170,11 @@ export default function App() {
         >
           <MediaProvider />
         </MediaPlayer>
+      </div>
+      <div className='absolute top-4 right-5'>
+        <a target="_blank" href="https://github.com/ZaikoXander/HoraDeSilencioInterrompido">
+          <FaGithub size={40} />
+        </a>
       </div>
     </main>
   )
