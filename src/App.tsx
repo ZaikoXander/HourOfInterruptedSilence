@@ -4,6 +4,7 @@ import '@vidstack/react/player/styles/base.css'
 import { MediaPlayer, MediaPlayerInstance, MediaProvider } from '@vidstack/react'
 
 import Button from './components/Button'
+import StartOrPauseTimerButton from './components/StartOrPauseTimerButton'
 
 import useTimer from './hooks/useTimer'
 
@@ -75,13 +76,6 @@ export default function App() {
 
   function properlyTimerFormat(digit: number): string {
     return digit.toString().padStart(TIMER_FORMAT_LENGTH, TIMER_FORMAT_PADDING)
-  }
-
-  function startOrPauseTimerButtonText() {
-    if (isRunning) return 'Pausar'
-    if (canResetTimer) return 'Continuar'
-
-    return 'Começar'
   }
 
   useEffect(() => {
@@ -156,13 +150,12 @@ export default function App() {
           />
         </div>
         <div className="flex gap-4">
-          <Button
-            className="bg-green-500"
-            disabled={!canStartPlaying}
-            onClick={handleStartOrPauseTimer}
-          >
-            {startOrPauseTimerButtonText()}
-          </Button>
+          <StartOrPauseTimerButton
+            isRunning={isRunning}
+            canResetTimer={canResetTimer}
+            canStartPlaying={canStartPlaying}
+            handleStartOrPauseTimer={handleStartOrPauseTimer}
+          />
           <Button
             className="bg-red-500"
             disabled={!canResetTimer}
