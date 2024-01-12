@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 import '@vidstack/react/player/styles/base.css'
 import { MediaPlayer, MediaPlayerInstance, MediaProvider } from '@vidstack/react'
 
+import Button from './components/Button'
+
 import useTimer from './hooks/useTimer'
 
 import OneHourRandomAudioMomentsGenerator from './classes/oneHourRandomAudioMomentsGenerator'
@@ -75,6 +77,13 @@ export default function App() {
     return digit.toString().padStart(TIMER_FORMAT_LENGTH, TIMER_FORMAT_PADDING)
   }
 
+  function startOrPauseTimerButtonText() {
+    if (isRunning) return 'Pausar'
+    if (canResetTimer) return 'Continuar'
+
+    return 'Começar'
+  }
+
   useEffect(() => {
     if (!isRunning) {
       if (!isAudioPaused) {
@@ -101,7 +110,7 @@ export default function App() {
     playAudio()
     setAudioMoments(audioMoments.slice(1))
   }, [audioMoments, canStartPlaying, isAudioPaused, isRunning, shouldAudioUnpause, timeLeft])
-  
+
   return (
     <main className="flex flex-col items-center justify-center h-screen bg-[#FFD700] pb-32 gap-40">
       <h1 className="text-6xl text-[#333333] font-[Baloo] font-bold drop-shadow shadow-black">
@@ -147,20 +156,20 @@ export default function App() {
           />
         </div>
         <div className="flex gap-4">
-          <button
-            className="bg-green-500 text-white py-2 px-4 rounded text-2xl font-[Inter] font-bold disabled:opacity-50"
+          <Button
+            className="bg-green-500"
             disabled={!canStartPlaying}
             onClick={handleStartOrPauseTimer}
           >
-            { isRunning ? 'Pausar' : 'Começar' }
-          </button>
-          <button
-            className="bg-red-500 text-white py-2 px-4 rounded text-2xl font-[Inter] font-bold disabled:opacity-50"
+            {startOrPauseTimerButtonText()}
+          </Button>
+          <Button
+            className="bg-red-500"
             disabled={!canResetTimer}
             onClick={handleResetTimer}
           >
             Zerar
-          </button>
+          </Button>
         </div>
       </section>
       <MediaPlayer
