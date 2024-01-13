@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import '@vidstack/react/player/styles/base.css'
 import { MediaPlayer, MediaPlayerInstance, MediaProvider } from '@vidstack/react'
 
+import Timer from './components/Timer'
 import Button from './components/Button'
 import StartOrPauseTimerButton from './components/StartOrPauseTimerButton'
 
@@ -14,8 +15,6 @@ import extractYoutubeVideoId from './utils/extractYoutubeVideoId'
 import { FaGithub } from 'react-icons/fa'
 
 const ONE_HOUR_IN_SECONDS = 3600
-const TIMER_FORMAT_LENGTH = 2
-const TIMER_FORMAT_PADDING = '0'
 
 export default function App() {
   const player: React.RefObject<MediaPlayerInstance> = useRef<MediaPlayerInstance>(null)
@@ -74,10 +73,6 @@ export default function App() {
     setAudioMoments(null)
   }
 
-  function properlyTimerFormat(digit: number): string {
-    return digit.toString().padStart(TIMER_FORMAT_LENGTH, TIMER_FORMAT_PADDING)
-  }
-
   useEffect(() => {
     if (!isRunning) {
       if (!isAudioPaused) {
@@ -111,20 +106,7 @@ export default function App() {
         Uma hora de silêncio interrompido
       </h1>
       <section className="flex flex-col items-center gap-12">
-        <time
-          className="
-            w-60 flex justify-center rounded py-3 px-4 bg-black shadow shadow-black mb-10 text-5xl text-[#FFA500]
-            font-[Inter]
-          "
-        >
-          {
-            properlyTimerFormat(timeLeft.getHours())
-          }:{
-            properlyTimerFormat(timeLeft.getMinutes())
-          }:{
-            properlyTimerFormat(timeLeft.getSeconds())
-          }
-        </time>
+        <Timer timeLeft={timeLeft} />
         <div className="flex flex-col gap-y-4">
           <p className='opacity-50'>Em breve, será possível fazer o upload de arquivos de áudio ou vídeo.</p>
           <div className="flex gap-4 hidden">
