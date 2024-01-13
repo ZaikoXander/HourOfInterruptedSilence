@@ -125,15 +125,16 @@ export default function App() {
           </Button>
         </div>
       </section>
-      <MediaPlayer
-        className='absolute bottom-0 opacity-0 -z-50'
-        src={`youtube/${youtubeVideoId}`}
-        ref={player}
-        onCanPlay={() => setCanStartPlaying(true)}
-        onEnd={() => resetAudio()}
-      >
-        <MediaProvider />
-      </MediaPlayer>
+      <div className='absolute bottom-0 opacity-0 -z-50'>
+        <MediaPlayer
+          src={`youtube/${youtubeVideoId}`}
+          ref={player}
+          onCanPlay={() => setCanStartPlaying(true)}
+          onEnd={() => resetAudio()}
+        >
+          <MediaProvider />
+        </MediaPlayer>
+      </div>
       <a
         className='absolute top-4 right-5'
         target="_blank"
