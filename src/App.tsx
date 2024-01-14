@@ -31,7 +31,7 @@ export default function App() {
   const [audioMoments, setAudioMoments] = useState<number[] | null>()
   const [audioShouldUnpause, setAudioShouldUnpause] = useState<boolean>(false)
   
-  const { timeLeft, startOrPause, reset, isRunning } = useTimer(ONE_HOUR_IN_SECONDS)
+  const { timeLeft, start, pause, reset, isRunning } = useTimer(ONE_HOUR_IN_SECONDS)
   const canResetTimer = timeLeft.getTotalSeconds() < ONE_HOUR_IN_SECONDS
 
   function handleYoutubeVideoUrlChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -53,54 +53,69 @@ export default function App() {
     }
   }
 
-  function handleStartOrPauseTimerButtonClick(): void {
-    startOrPause()
+  function handleRandomAudioMomentsGeneration(): void {
+    const oneHourRandomAudioMomentsGenerator = new OneHourRandomAudioMomentsGenerator(playerDuration)
+    const generatedRandomAudioMoments = oneHourRandomAudioMomentsGenerator.execute()
 
-    if (!audioMoments) {
-      const oneHourRandomAudioMomentsGenerator = new OneHourRandomAudioMomentsGenerator(playerDuration)
-      const generatedRandomAudioMoments = oneHourRandomAudioMomentsGenerator.execute()
-
-      setAudioMoments(generatedRandomAudioMoments)
-    }
+    setAudioMoments(generatedRandomAudioMoments)
   }
 
-  function handleResetTimerButtonClick(): void {
-    reset()
-    resetAudio()
-    setAudioMoments(null)
-  }
-
-  useEffect(() => {
-    if (!isRunning) {
-      if (!playerPaused) {
-        pauseAudio()
-        setAudioShouldUnpause(true)
-      }
-
-      return
-    }
-
-    const shouldNotPlayNextAudioMoment = !playerPaused || !audioMoments || audioShouldUnpause
-    if (shouldNotPlayNextAudioMoment) {
+  function handleStartTimer(): void {
+    start()
+    if (playerPaused) {
       if (audioShouldUnpause) {
         playAudio()
         setAudioShouldUnpause(false)
       }
+    }
+  }
 
+  function handlePauseTimer(): void {
+    pause()
+    if (!playerPaused) {
+      pauseAudio()
+      setAudioShouldUnpause(true)
+    }
+  }
+
+  function handleStartOrPauseTimerButtonClick(): void {
+    if (!audioMoments) handleRandomAudioMomentsGeneration()
+
+    if (isRunning) {
+      handlePauseTimer()
       return
     }
 
-    const nextMoment = audioMoments[0]
-    const secondsToNextMoment = ONE_HOUR_IN_SECONDS - nextMoment
-    const audioShouldPlay = timeLeft.getTotalSeconds() === secondsToNextMoment
+    handleStartTimer()
+  }
 
-    if (audioShouldPlay) {
-      playAudio()
-      
-      const updatedAudioMoments = audioMoments.slice(1)
-      setAudioMoments(updatedAudioMoments)
+  function handleResetTimerButtonClick(): void {
+    reset()
+
+    if (playerCurrentTime > 0) {
+      resetAudio()
+      setAudioMoments(null)
     }
-  }, [audioMoments, isRunning, audioShouldUnpause, timeLeft, pauseAudio, playAudio, playerPaused])
+  }
+
+  useEffect(() => {
+    function handleAudioMoments() {
+      if (!audioMoments) return
+
+      const nextMoment = audioMoments[0]
+      const secondsToNextMoment = ONE_HOUR_IN_SECONDS - nextMoment
+      const audioShouldPlay = timeLeft.getTotalSeconds() === secondsToNextMoment
+
+      if (audioShouldPlay) {
+        playAudio()
+        
+        const updatedAudioMoments = audioMoments.slice(1)
+        setAudioMoments(updatedAudioMoments)
+      }
+    }
+
+    handleAudioMoments()
+  }, [audioMoments, playAudio, timeLeft])
 
   return (
     <main className="flex flex-col items-center justify-center h-screen bg-[#FFD700] pb-32 gap-40">
