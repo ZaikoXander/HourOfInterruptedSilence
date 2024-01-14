@@ -15,7 +15,7 @@ import extractYoutubeVideoId from './utils/extractYoutubeVideoId'
 
 import { FaGithub } from 'react-icons/fa'
 
-const ONE_HOUR_IN_SECONDS = 3600
+import { ONE_HOUR_IN_SECONDS } from './constants'
 
 export default function App() {
   const player: React.RefObject<MediaPlayerInstance> = useRef<MediaPlayerInstance>(null)

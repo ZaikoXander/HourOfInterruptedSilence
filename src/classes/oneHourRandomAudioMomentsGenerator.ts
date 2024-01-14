@@ -1,18 +1,19 @@
+import { ONE_HOUR_IN_SECONDS } from "../constants"
+
 export default class OneHourRandomAudioMomentsGenerator {
-  private readonly oneHourInSeconds: number = 3600
-  private readonly audioInterval: number = 5
-  private readonly initialAudioMoment: number = 0
-  private readonly finalAudioMoment: number
   private readonly audioDuration: number
   private readonly audioTotalDuration: number
+  private readonly finalAudioMoment: number
   private readonly audioMoments: number[]
   private readonly lastPossibleAudioMoment: number
+  private readonly audioInterval: number = 5
+  private readonly initialAudioMoment: number = 0
   private readonly randomAudiosPerHour: number = 13
 
   constructor(audioDuration: number) {
     this.audioDuration = audioDuration
     this.audioTotalDuration = this.audioDuration + this.audioInterval
-    this.finalAudioMoment = this.oneHourInSeconds - this.audioTotalDuration
+    this.finalAudioMoment = ONE_HOUR_IN_SECONDS - this.audioTotalDuration
     this.audioMoments = [this.initialAudioMoment, this.finalAudioMoment]
     this.lastPossibleAudioMoment = this.finalAudioMoment - (this.audioTotalDuration * 2)
   }
