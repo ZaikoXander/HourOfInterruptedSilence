@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import '@vidstack/react/player/styles/base.css'
-import { MediaPlayer, MediaPlayerInstance, MediaProvider } from '@vidstack/react'
+import { MediaPlayer, MediaPlayerInstance, MediaProvider, useMediaStore, useMediaRemote } from '@vidstack/react'
 
 import Timer from './components/Timer'
 import AudioOrVideoInput from './components/AudioOrVideoInput'
@@ -19,56 +19,52 @@ const ONE_HOUR_IN_SECONDS = 3600
 
 export default function App() {
   const player: React.RefObject<MediaPlayerInstance> = useRef<MediaPlayerInstance>(null)
+  const remote = useMediaRemote(player)
+  const {
+    paused: playerPaused,
+    currentTime: playerCurrentTime,
+    duration: playerDuration,
+    canPlay: playerCanPlay,
+  } = useMediaStore(player)
+
   const [youtubeVideoUrl, setYoutubeVideoUrl] = useState<string>('')
-  const [canStartPlaying, setCanStartPlaying] = useState<boolean>(false)
-  const [isAudioPaused, setIsAudioPaused] = useState<boolean>(true)
   const [audioMoments, setAudioMoments] = useState<number[] | null>()
-  const [shouldAudioUnpause, setShouldAudioUnpause] = useState<boolean>(false)
+  const [audioShouldUnpause, setAudioShouldUnpause] = useState<boolean>(false)
   
   const { timeLeft, startOrPause, reset, isRunning } = useTimer(ONE_HOUR_IN_SECONDS)
   const canResetTimer = timeLeft.getTotalSeconds() < ONE_HOUR_IN_SECONDS
 
   function handleYoutubeVideoUrlChange(event: React.ChangeEvent<HTMLInputElement>): void {
     reset()
-    setCanStartPlaying(false)
-    setYoutubeVideoUrl(event.target.value)
+    const url = event.target.value
+    setYoutubeVideoUrl(url)
   }
 
   const youtubeVideoId: string | null = extractYoutubeVideoId(youtubeVideoUrl)
 
-  async function playAudio(): Promise<void> {
-    if (player.current?.paused) {
-      await player.current.play()
-      setIsAudioPaused(false)
-    }
-  }
+  const playAudio = useCallback(() => remote.play(), [remote])
+  const pauseAudio = useCallback(() => remote.pause(), [remote])
 
-  async function pauseAudio(): Promise<void> {
-    if (player.current && !player.current.paused) {
-      await player.current.pause()
-      setIsAudioPaused(true)
-    }
-  }
-
-  async function resetAudio(): Promise<void> {
-    if (player.current && !(player.current.paused && player.current.currentTime === 0)) {
+  function resetAudio(): void {
+    const playerReset = playerPaused && playerCurrentTime === 0
+    if (!playerReset) {
       pauseAudio()
-      player.current.currentTime = 0
+      remote.seek(0)
     }
   }
 
-  function handleStartOrPauseTimer(): void {
+  function handleStartOrPauseTimerButtonClick(): void {
     startOrPause()
 
-    if (player.current && !audioMoments) {
-      const audioDuration: number = player.current.$state.duration()
-      const oneHourRandomAudioMomentsGenerator = new OneHourRandomAudioMomentsGenerator(audioDuration)
+    if (!audioMoments) {
+      const oneHourRandomAudioMomentsGenerator = new OneHourRandomAudioMomentsGenerator(playerDuration)
       const generatedRandomAudioMoments = oneHourRandomAudioMomentsGenerator.execute()
+
       setAudioMoments(generatedRandomAudioMoments)
     }
   }
 
-  function handleResetTimer(): void {
+  function handleResetTimerButtonClick(): void {
     reset()
     resetAudio()
     setAudioMoments(null)
@@ -76,30 +72,35 @@ export default function App() {
 
   useEffect(() => {
     if (!isRunning) {
-      if (!isAudioPaused) {
+      if (!playerPaused) {
         pauseAudio()
-        setShouldAudioUnpause(true)
+        setAudioShouldUnpause(true)
       }
 
       return
     }
 
-    if (!isAudioPaused || !audioMoments) return
-
-    if (shouldAudioUnpause) {
-      playAudio()
-      setShouldAudioUnpause(false)
+    const shouldNotPlayNextAudioMoment = !playerPaused || !audioMoments || audioShouldUnpause
+    if (shouldNotPlayNextAudioMoment) {
+      if (audioShouldUnpause) {
+        playAudio()
+        setAudioShouldUnpause(false)
+      }
 
       return
     }
 
-    const audioShouldPlay = timeLeft.getTotalSeconds() === (ONE_HOUR_IN_SECONDS - audioMoments[0])
+    const nextMoment = audioMoments[0]
+    const secondsToNextMoment = ONE_HOUR_IN_SECONDS - nextMoment
+    const audioShouldPlay = timeLeft.getTotalSeconds() === secondsToNextMoment
 
-    if (!audioShouldPlay) return
-
-    playAudio()
-    setAudioMoments(audioMoments.slice(1))
-  }, [audioMoments, canStartPlaying, isAudioPaused, isRunning, shouldAudioUnpause, timeLeft])
+    if (audioShouldPlay) {
+      playAudio()
+      
+      const updatedAudioMoments = audioMoments.slice(1)
+      setAudioMoments(updatedAudioMoments)
+    }
+  }, [audioMoments, isRunning, audioShouldUnpause, timeLeft, pauseAudio, playAudio, playerPaused])
 
   return (
     <main className="flex flex-col items-center justify-center h-screen bg-[#FFD700] pb-32 gap-40">
@@ -113,13 +114,13 @@ export default function App() {
           <StartOrPauseTimerButton
             isRunning={isRunning}
             canResetTimer={canResetTimer}
-            canStartPlaying={canStartPlaying}
-            handleStartOrPauseTimer={handleStartOrPauseTimer}
+            canStartPlaying={playerCanPlay}
+            handleStartOrPauseTimer={handleStartOrPauseTimerButtonClick}
           />
           <Button
             className="bg-red-500"
             disabled={!canResetTimer}
-            onClick={handleResetTimer}
+            onClick={handleResetTimerButtonClick}
           >
             Zerar
           </Button>
@@ -129,8 +130,7 @@ export default function App() {
         <MediaPlayer
           src={`youtube/${youtubeVideoId}`}
           ref={player}
-          onCanPlay={() => setCanStartPlaying(true)}
-          onEnd={() => resetAudio()}
+          onEnd={resetAudio}
         >
           <MediaProvider />
         </MediaPlayer>
