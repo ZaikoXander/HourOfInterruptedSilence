@@ -9,5 +9,10 @@
   },
   "fileInputButton": {
     "fileInputButtonText": "Usar arquivo de áudio ou vídeo"
+  },
+  "startOrPauseTimerButton": {
+    "startTimerButtonText": "Começar",
+    "pauseTimerButtonText": "Pausar",
+    "resumeTimerButtonText": "Continuar"
   }
 }
