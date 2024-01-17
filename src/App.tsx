@@ -149,7 +149,7 @@ export default function App() {
             disabled={!canResetTimer}
             onClick={handleResetTimerButtonClick}
           >
-            Zerar
+            {t('resetButton')}
           </Button>
         </div>
       </section>
