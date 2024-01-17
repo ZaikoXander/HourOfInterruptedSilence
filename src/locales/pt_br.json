@@ -1,4 +1,6 @@
 {
   "title": "Uma hora de silêncio interrompido",
-  "resetButton": "Zerar"
+  "resetButton": "Zerar",
+  "audioOrVideoSourceInputSpan": "ou",
+  "youtubeVideoUrlInputPlaceholder": "Link do youtube"
 }

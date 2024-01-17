@@ -1,4 +1,6 @@
 {
   "title": "One hour of interrupted silence",
-  "resetButton": "Reset"
+  "resetButton": "Reset",
+  "audioOrVideoSourceInputSpan": "or",
+  "youtubeVideoUrlInputPlaceholder": "Youtube link"
 }
