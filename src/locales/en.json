@@ -2,5 +2,6 @@
   "title": "One hour of interrupted silence",
   "resetButton": "Reset",
   "audioOrVideoSourceInputSpan": "or",
-  "youtubeVideoUrlInputPlaceholder": "Youtube link"
+  "youtubeVideoUrlInputPlaceholder": "Youtube link",
+  "fileInputButtonText": "Use audio or video file"
 }

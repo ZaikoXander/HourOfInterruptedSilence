@@ -2,5 +2,6 @@
   "title": "Uma hora de silêncio interrompido",
   "resetButton": "Zerar",
   "audioOrVideoSourceInputSpan": "ou",
-  "youtubeVideoUrlInputPlaceholder": "Link do youtube"
+  "youtubeVideoUrlInputPlaceholder": "Link do youtube",
+  "fileInputButtonText": "Usar arquivo de áudio ou vídeo"
 }
