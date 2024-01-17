@@ -1,26 +1,24 @@
-import { useRef, useState } from "react"
+import { useRef } from "react"
 
 import Button from "../Button"
 
-export default function FileInputButton() {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [file, setFile] = useState<File>()
+interface FileInputButtonProps {
+  onChange?: (file: File) => void
+}
 
-  console.log(file)
+export default function FileInputButton({ onChange }: FileInputButtonProps) {
+  const inputRef = useRef<HTMLInputElement>(null)
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    if (!event.target.files) return
-    const file = event.target.files[0]
-
+    const file = event.target.files?.[0]
     if (!file) return
-    
-    setFile(file)
+
+    onChange?.(file)
+    event.target.value = ''
   }
 
   function handleButtonClick() {
-    if (!inputRef.current) return
-
-    inputRef.current.click()
+    inputRef.current?.click()
   }
 
   return (

@@ -1,5 +1,7 @@
 import { ONE_HOUR_IN_SECONDS } from "../constants"
 
+const { round, floor, random, abs } = Math
+
 export default class OneHourRandomAudioMomentsGenerator {
   private readonly audioDuration: number
   private readonly audioTotalDuration: number
@@ -11,7 +13,7 @@ export default class OneHourRandomAudioMomentsGenerator {
   private readonly randomAudiosPerHour: number = 13
 
   constructor(audioDuration: number) {
-    this.audioDuration = audioDuration
+    this.audioDuration = round(audioDuration)
     this.audioTotalDuration = this.audioDuration + this.audioInterval
     this.finalAudioMoment = ONE_HOUR_IN_SECONDS - this.audioTotalDuration
     this.audioMoments = [this.initialAudioMoment, this.finalAudioMoment]
@@ -21,7 +23,7 @@ export default class OneHourRandomAudioMomentsGenerator {
   private generateRandomAudioMoment(): number {
     const min: number = this.audioTotalDuration
     const max: number = this.lastPossibleAudioMoment + 1
-    const randomNumber: number = Math.floor(Math.random() * (max)) + min
+    const randomNumber: number = floor(random() * (max)) + min
   
     return randomNumber
   }
@@ -29,7 +31,7 @@ export default class OneHourRandomAudioMomentsGenerator {
   public execute(): number[] {
     for (let i = 0; i < this.randomAudiosPerHour; i++) {
       let randomAudioMoment: number = this.generateRandomAudioMoment()
-      while (this.audioMoments.some(audioMoment => Math.abs(audioMoment - randomAudioMoment) < this.audioTotalDuration)) {
+      while (this.audioMoments.some(audioMoment => abs(audioMoment - randomAudioMoment) < this.audioTotalDuration)) {
         randomAudioMoment = this.generateRandomAudioMoment()
       }
     

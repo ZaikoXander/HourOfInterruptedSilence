@@ -1,14 +1,25 @@
 import FileInputButton from "./FileInputButton"
 
+import extractYoutubeVideoId from "../../utils/extractYoutubeVideoId"
+
 interface AudioOrVideoInputProps {
-  handleYoutubeVideoUrlChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onChange?: (input: string | File) => void
 }
 
-export default function AudioOrVideoInput({ handleYoutubeVideoUrlChange }: AudioOrVideoInputProps) {
+export default function AudioOrVideoSourceInput({ onChange }: AudioOrVideoInputProps) {
+  function handleYoutubeVideoUrlInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const url = event.target.value
+    const id = extractYoutubeVideoId(url)
+    const source = 'youtube/' + id
+    if (!id) return
+
+    onChange?.(source)
+  }
+
   return (
     <div className="flex flex-col gap-y-4">
       <div className="flex items-center gap-4 justify-between pr-4">
-        <FileInputButton />
+        <FileInputButton onChange={onChange} />
         <span className="text-2xl font-[Inter] font-semibold">ou</span>
       </div>
       <input
@@ -20,7 +31,7 @@ export default function AudioOrVideoInput({ handleYoutubeVideoUrlChange }: Audio
           ].join(' ')
         }
         placeholder="Link do youtube"
-        onChange={handleYoutubeVideoUrlChange}
+        onChange={handleYoutubeVideoUrlInputChange}
       />
     </div>
   )

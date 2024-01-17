@@ -4,21 +4,20 @@ import '@vidstack/react/player/styles/base.css'
 import { MediaPlayer, MediaPlayerInstance, MediaProvider, useMediaStore, useMediaRemote } from '@vidstack/react'
 
 import Timer from './components/Timer'
-import AudioOrVideoInput from './components/AudioOrVideoInput'
+import AudioOrVideoSourceInput from './components/AudioOrVideoSourceInput'
 import StartOrPauseTimerButton from './components/StartOrPauseTimerButton'
 import Button from './components/Button'
 
 import useTimer from './hooks/useTimer'
 
 import OneHourRandomAudioMomentsGenerator from './classes/oneHourRandomAudioMomentsGenerator'
-import extractYoutubeVideoId from './utils/extractYoutubeVideoId'
 
 import { FaGithub } from 'react-icons/fa'
 
 import { ONE_HOUR_IN_SECONDS } from './constants'
 
 export default function App() {
-  const player: React.RefObject<MediaPlayerInstance> = useRef<MediaPlayerInstance>(null)
+  const player = useRef<MediaPlayerInstance>(null)
   const remote = useMediaRemote(player)
   const {
     paused: playerPaused,
@@ -27,32 +26,39 @@ export default function App() {
     canPlay: playerCanPlay,
   } = useMediaStore(player)
 
-  const [youtubeVideoUrl, setYoutubeVideoUrl] = useState<string>('')
   const [audioMoments, setAudioMoments] = useState<number[] | null>()
+  const [playerSource, setPlayerSource] = useState<string | File>('')
   const [audioShouldUnpause, setAudioShouldUnpause] = useState<boolean>(false)
   
   const { timeLeft, start, pause, reset, isRunning } = useTimer(ONE_HOUR_IN_SECONDS)
   const canResetTimer = timeLeft.getTotalSeconds() < ONE_HOUR_IN_SECONDS
 
-  function handleYoutubeVideoUrlChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    reset()
-    const url = event.target.value
-    setYoutubeVideoUrl(url)
-  }
-
-  const youtubeVideoId: string | null = extractYoutubeVideoId(youtubeVideoUrl)
-
   const playAudio = useCallback(() => remote.play(), [remote])
   const pauseAudio = useCallback(() => remote.pause(), [remote])
 
-  function resetAudio(): void {
+  function handleAudioOrVideoSourceInputChange(input: string | File): void {
+    reset()
+    setAudioMoments(null)
+    pauseAudio()
+    remote.seek(0)
+    setPlayerSource(input)
+  }
+
+  async function resetAudio(): Promise<void> {
     const playerReset = playerPaused && playerCurrentTime === 0
     if (!playerReset) {
       pauseAudio()
       remote.seek(0)
+      if (playerSource instanceof File) {
+        await new Promise((resolve) => {
+          setPlayerSource('')
+          resolve(true)
+        })
+        setPlayerSource(playerSource)
+      }
     }
   }
-
+  
   function handleRandomAudioMomentsGeneration(): void {
     const oneHourRandomAudioMomentsGenerator = new OneHourRandomAudioMomentsGenerator(playerDuration)
     const generatedRandomAudioMoments = oneHourRandomAudioMomentsGenerator.execute()
@@ -124,7 +130,7 @@ export default function App() {
       </h1>
       <section className="flex flex-col items-center gap-12">
         <Timer timeLeft={timeLeft} />
-        <AudioOrVideoInput handleYoutubeVideoUrlChange={handleYoutubeVideoUrlChange} />
+        <AudioOrVideoSourceInput onChange={handleAudioOrVideoSourceInputChange} />
         <div className="flex gap-4">
           <StartOrPauseTimerButton
             isRunning={isRunning}
@@ -143,7 +149,7 @@ export default function App() {
       </section>
       <div className='absolute bottom-0 opacity-0 -z-50'>
         <MediaPlayer
-          src={`youtube/${youtubeVideoId}`}
+          src={playerSource}
           ref={player}
           onEnd={resetAudio}
         >
