@@ -38,9 +38,11 @@ export default function App() {
 
   function handleAudioOrVideoSourceInputChange(input: string | File): void {
     reset()
-    setAudioMoments(null)
-    pauseAudio()
-    remote.seek(0)
+    if (playerSource !== '') {
+      setAudioMoments(null)
+      pauseAudio()
+      remote.seek(0)
+    }
     setPlayerSource(input)
   }
 
