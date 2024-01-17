@@ -35,7 +35,7 @@ export default function App() {
   const { timeLeft, start, pause, reset, isRunning } = useTimer(ONE_HOUR_IN_SECONDS)
   const canResetTimer = timeLeft.getTotalSeconds() < ONE_HOUR_IN_SECONDS
 
-  const { t } = useTranslation()
+  const { t } = useTranslation('', { keyPrefix: 'app' })
 
   const playAudio = useCallback(() => remote.play(), [remote])
   const pauseAudio = useCallback(() => remote.pause(), [remote])

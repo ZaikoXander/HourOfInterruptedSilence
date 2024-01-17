@@ -10,7 +10,7 @@ interface FileInputButtonProps {
 
 export default function FileInputButton({ onChange }: FileInputButtonProps) {
   const inputRef = useRef<HTMLInputElement>(null)
-  const { t } = useTranslation()
+  const { t } = useTranslation('', { keyPrefix: 'fileInputButton' })
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]

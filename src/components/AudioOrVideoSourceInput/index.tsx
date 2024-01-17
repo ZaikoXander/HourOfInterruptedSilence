@@ -9,7 +9,7 @@ interface AudioOrVideoInputProps {
 }
 
 export default function AudioOrVideoSourceInput({ onChange }: AudioOrVideoInputProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation('', { keyPrefix: 'audioOrVideoSourceInput' })
 
   function handleYoutubeVideoUrlInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const url = event.target.value

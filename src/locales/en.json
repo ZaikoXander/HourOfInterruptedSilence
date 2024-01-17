@@ -1,7 +1,13 @@
 {
-  "title": "One hour of interrupted silence",
-  "resetButton": "Reset",
-  "audioOrVideoSourceInputSpan": "or",
-  "youtubeVideoUrlInputPlaceholder": "Youtube link",
-  "fileInputButtonText": "Use audio or video file"
+  "app": {
+    "title": "One hour of interrupted silence",
+    "resetButton": "Reset"
+  },
+  "audioOrVideoSourceInput": {
+    "audioOrVideoSourceInputSpan": "or",
+    "youtubeVideoUrlInputPlaceholder": "Youtube link"
+  },
+  "fileInputButton": {
+    "fileInputButtonText": "Use audio or video file"
+  }
 }
