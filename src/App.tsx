@@ -10,6 +10,8 @@ import Button from './components/Button'
 
 import useTimer from './hooks/useTimer'
 
+import { useTranslation } from 'react-i18next'
+
 import OneHourRandomAudioMomentsGenerator from './classes/oneHourRandomAudioMomentsGenerator'
 
 import { FaGithub } from 'react-icons/fa'
@@ -32,6 +34,8 @@ export default function App() {
   
   const { timeLeft, start, pause, reset, isRunning } = useTimer(ONE_HOUR_IN_SECONDS)
   const canResetTimer = timeLeft.getTotalSeconds() < ONE_HOUR_IN_SECONDS
+
+  const { t, i18n } = useTranslation('', { keyPrefix: 'app' })
 
   const playAudio = useCallback(() => remote.play(), [remote])
   const pauseAudio = useCallback(() => remote.pause(), [remote])
@@ -125,10 +129,15 @@ export default function App() {
     handleAudioMoments()
   }, [audioMoments, playAudio, timeLeft])
 
+  useEffect(() => {
+    document.title = t('pageTitle')
+    document.documentElement.lang = i18n.language
+  }, [t, i18n.language])
+
   return (
     <main className="flex flex-col items-center justify-center h-screen bg-[#FFD700] pb-32 gap-40">
       <h1 className="text-6xl text-[#333333] font-[Baloo] font-bold drop-shadow shadow-black">
-        Uma hora de silêncio interrompido
+        {t('title')}
       </h1>
       <section className="flex flex-col items-center gap-12">
         <Timer timeLeft={timeLeft} />
@@ -145,7 +154,7 @@ export default function App() {
             disabled={!canResetTimer}
             onClick={handleResetTimerButtonClick}
           >
-            Zerar
+            {t('resetButton')}
           </Button>
         </div>
       </section>

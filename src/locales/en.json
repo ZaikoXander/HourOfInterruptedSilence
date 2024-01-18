@@ -1,0 +1,19 @@
+{
+  "app": {
+    "pageTitle": "Hour of Interrupted Silence",
+    "title": "One hour of interrupted silence",
+    "resetButton": "Reset"
+  },
+  "audioOrVideoSourceInput": {
+    "audioOrVideoSourceInputSpan": "or",
+    "youtubeVideoUrlInputPlaceholder": "Youtube link"
+  },
+  "fileInputButton": {
+    "fileInputButtonText": "Use audio or video file"
+  },
+  "startOrPauseTimerButton": {
+    "startTimerButtonText": "Start",
+    "pauseTimerButtonText": "Pause",
+    "resumeTimerButtonText": "Resume"
+  }
+}

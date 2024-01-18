@@ -1,0 +1,19 @@
+{
+  "app": {
+    "pageTitle": "Hora de Silêncio Interrompido",
+    "title": "Uma hora de silêncio interrompido",
+    "resetButton": "Zerar"
+  },
+  "audioOrVideoSourceInput": {
+    "audioOrVideoSourceInputSpan": "ou",
+    "youtubeVideoUrlInputPlaceholder": "Link do youtube"
+  },
+  "fileInputButton": {
+    "fileInputButtonText": "Usar arquivo de áudio ou vídeo"
+  },
+  "startOrPauseTimerButton": {
+    "startTimerButtonText": "Começar",
+    "pauseTimerButtonText": "Pausar",
+    "resumeTimerButtonText": "Continuar"
+  }
+}
