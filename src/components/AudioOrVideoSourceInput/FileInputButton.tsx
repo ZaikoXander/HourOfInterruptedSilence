@@ -1,8 +1,8 @@
-import { useRef } from "react"
+import { useRef } from 'react'
 
-import Button from "../Button"
+import Button from '../Button'
 
-import { useTranslation } from "react-i18next"
+import { useTranslation } from 'react-i18next'
 
 interface FileInputButtonProps {
   onChange?: (file: File) => void
@@ -26,13 +26,7 @@ export default function FileInputButton({ onChange }: FileInputButtonProps) {
 
   return (
     <div>
-      <input
-        type="file"
-        ref={inputRef}
-        accept="audio/*, video/*"
-        className="hidden"
-        onChange={handleInputChange}
-      />
+      <input type='file' ref={inputRef} accept='audio/*, video/*' className='hidden' onChange={handleInputChange} />
       <Button onClick={handleButtonClick}>{t('fileInputButtonText')}</Button>
     </div>
   )

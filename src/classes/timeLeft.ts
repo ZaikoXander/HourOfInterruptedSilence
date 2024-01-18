@@ -1,4 +1,4 @@
-import { ONE_HOUR_IN_SECONDS } from "../constants"
+import { ONE_HOUR_IN_SECONDS } from '../constants'
 
 class TimeLeft {
   private totalSeconds: number
