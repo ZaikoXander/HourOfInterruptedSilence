@@ -3,10 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import '@vidstack/react/player/styles/base.css'
 import { MediaPlayer, MediaPlayerInstance, MediaProvider, useMediaStore, useMediaRemote } from '@vidstack/react'
 
-import Timer from './components/Timer'
-import AudioOrVideoSourceInput from './components/AudioOrVideoSourceInput'
-import StartOrPauseTimerButton from './components/StartOrPauseTimerButton'
-import Button from './components/Button'
+import { Timer, AudioOrVideoSourceInput, StartOrPauseTimerButton, Button } from './components'
 
 import useTimer from './hooks/useTimer'
 
