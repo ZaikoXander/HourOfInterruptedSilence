@@ -1,5 +1,6 @@
 {
   "app": {
+    "pageTitle": "Hour of Interrupted Silence",
     "title": "One hour of interrupted silence",
     "resetButton": "Reset"
   },

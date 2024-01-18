@@ -35,7 +35,7 @@ export default function App() {
   const { timeLeft, start, pause, reset, isRunning } = useTimer(ONE_HOUR_IN_SECONDS)
   const canResetTimer = timeLeft.getTotalSeconds() < ONE_HOUR_IN_SECONDS
 
-  const { t } = useTranslation('', { keyPrefix: 'app' })
+  const { t, i18n } = useTranslation('', { keyPrefix: 'app' })
 
   const playAudio = useCallback(() => remote.play(), [remote])
   const pauseAudio = useCallback(() => remote.pause(), [remote])
@@ -128,6 +128,11 @@ export default function App() {
 
     handleAudioMoments()
   }, [audioMoments, playAudio, timeLeft])
+
+  useEffect(() => {
+    document.title = t('pageTitle')
+    document.documentElement.lang = i18n.language
+  }, [t, i18n.language])
 
   return (
     <main className="flex flex-col items-center justify-center h-screen bg-[#FFD700] pb-32 gap-40">
