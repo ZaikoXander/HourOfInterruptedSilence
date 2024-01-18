@@ -2,6 +2,8 @@ import FileInputButton from "./FileInputButton"
 
 import { useTranslation } from "react-i18next"
 
+import cn from "../../lib/cn"
+
 import extractYoutubeVideoId from "../../utils/extractYoutubeVideoId"
 
 interface AudioOrVideoInputProps {
@@ -29,10 +31,10 @@ export default function AudioOrVideoSourceInput({ onChange }: AudioOrVideoInputP
       <input
         type="url"
         className={
-          [
+          cn(
             'border border-gray-300 rounded py-2 px-4 text-2xl font-[Inter] font-semibold outline-none',
             'focus:border-blue-500 focus:border focus:ring-2 focus:ring-blue-500'
-          ].join(' ')
+          )
         }
         placeholder={t('youtubeVideoUrlInputPlaceholder')}
         onChange={handleYoutubeVideoUrlInputChange}

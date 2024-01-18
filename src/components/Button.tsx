@@ -1,5 +1,7 @@
 import { ReactNode } from "react"
 
+import cn from "../lib/cn"
+
 interface ButtonProps {
   children?: ReactNode
   className?: string
@@ -11,10 +13,9 @@ export default function Button({ children, className, disabled, onClick }: Butto
   return (
     <button
       className={
-        [
-          'bg-blue-500 text-white py-2 px-4 rounded text-2xl font-[Inter] font-bold disabled:opacity-50',
-          className
-        ].join(' ')
+        cn(
+          'bg-blue-500 text-white py-2 px-4 rounded text-2xl font-[Inter] font-bold disabled:opacity-50', className
+        )
       }
       disabled={disabled}
       onClick={onClick}
