@@ -4,10 +4,11 @@ const TIMER_FORMAT_LENGTH = 2
 const TIMER_FORMAT_PADDING = '0'
 
 interface TimerProps {
+  className?: string
   timeLeft: TimeLeft
 }
 
-export default function Timer({ timeLeft }: TimerProps) {
+export default function Timer({ className, timeLeft }: TimerProps) {
   function formatDigit(digit: number): string {
     const stringDigit: string = digit.toString()
 
@@ -29,8 +30,9 @@ export default function Timer({ timeLeft }: TimerProps) {
     <time
       className={
         [
-          'w-60 flex justify-center rounded py-3 px-4 bg-black shadow shadow-black mb-10 text-5xl text-[#FFA500]',
-          'font-[Inter]'
+          'w-60 flex justify-center rounded py-3 px-4 bg-black shadow shadow-black text-5xl text-[#FFA500]',
+          'font-[Inter]',
+          className,
         ].join(' ')
       }
     >
