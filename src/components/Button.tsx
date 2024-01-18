@@ -1,6 +1,6 @@
-import { ReactNode } from "react"
+import type { ReactNode } from 'react'
 
-import cn from "../lib/cn"
+import cn from '../lib/cn'
 
 interface ButtonProps {
   children?: ReactNode
@@ -12,15 +12,15 @@ interface ButtonProps {
 export default function Button({ children, className, disabled, onClick }: ButtonProps) {
   return (
     <button
-      className={
-        cn(
-          'bg-blue-500 text-white py-2 px-4 rounded text-2xl font-[Inter] font-bold disabled:opacity-50', className
-        )
-      }
+      type='button'
+      className={cn(
+        'bg-blue-500 text-white py-2 px-4 rounded text-2xl font-[Inter] font-bold disabled:opacity-50',
+        className,
+      )}
       disabled={disabled}
       onClick={onClick}
     >
-      { children }
+      {children}
     </button>
   )
 }

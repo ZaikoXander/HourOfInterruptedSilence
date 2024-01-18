@@ -1,6 +1,6 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next'
 
-import Button from "./Button";
+import Button from './Button'
 
 interface StartOrPauseTimerButtonProps {
   isRunning: boolean
@@ -13,7 +13,7 @@ export default function StartOrPauseTimerButton({
   isRunning,
   canResetTimer,
   canStartPlaying,
-  handleStartOrPauseTimer
+  handleStartOrPauseTimer,
 }: StartOrPauseTimerButtonProps) {
   const { t } = useTranslation('', { keyPrefix: 'startOrPauseTimerButton' })
 
@@ -25,11 +25,7 @@ export default function StartOrPauseTimerButton({
   }
 
   return (
-    <Button
-      className="bg-green-500"
-      disabled={!canStartPlaying}
-      onClick={handleStartOrPauseTimer}
-    >
+    <Button className='bg-green-500' disabled={!canStartPlaying} onClick={handleStartOrPauseTimer}>
       {startOrPauseTimerButtonText()}
     </Button>
   )
