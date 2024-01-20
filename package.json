@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "pw": "bunx playwright test",
+    "pw:sr": "bunx playwright show-report",
+    "pw:ui": "bunx playwright test --ui",
+    "pw:cg": "bunx playwright codegen"
   },
   "dependencies": {
     "@vercel/analytics": "^1.1.1",
@@ -22,6 +26,8 @@
     "react-icons": "^4.12.0"
   },
   "devDependencies": {
+    "@playwright/test": "latest",
+    "@types/node": "^20.11.5",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
