@@ -1,6 +1,6 @@
-import cn from "../lib/cn"
+import cn from '../lib/cn'
 
-import type TimeLeft from "../classes/timeLeft"
+import type TimeLeft from '../classes/timeLeft'
 
 const TIMER_FORMAT_LENGTH = 2
 const TIMER_FORMAT_PADDING = '0'
@@ -30,13 +30,11 @@ export default function Timer({ className, timeLeft }: TimerProps) {
 
   return (
     <time
-      className={
-        cn(
-          'w-60 flex justify-center rounded py-3 px-4 bg-black shadow shadow-black text-5xl text-[#FFA500]',
-          'font-[Inter]',
-          className
-        )
-      }
+      className={cn(
+        'w-60 flex justify-center rounded py-3 px-4 bg-black shadow shadow-black text-5xl text-[#FFA500]',
+        'font-[Inter]',
+        className,
+      )}
     >
       {formatTime()}
     </time>
