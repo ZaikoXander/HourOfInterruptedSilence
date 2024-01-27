@@ -1,7 +1,7 @@
 import { expect, test, type Locator } from '@playwright/test'
 
 test.describe
-  .serial('can start timer using youtube link', () => {
+  .serial('Timer functionality with YouTube link', () => {
     let youtubeLinkInput: Locator
     const youtubeLink = 'https://youtu.be/HRhNujE-oCQ?si=RIYHkbcwGp1a4645'
     let timer: Locator
@@ -20,7 +20,7 @@ test.describe
       await youtubeLinkInput.fill(youtubeLink)
     })
 
-    test('should start, pause, resume, and  reset the timer', async ({ page }) => {
+    test('should start, pause, resume, and reset the timer', async ({ page }) => {
       await expect(timer).toHaveText('01:00:00')
       await expect(startOrPauseOrResumeButton).toHaveText('Começar')
 
@@ -48,7 +48,7 @@ test.describe
       await expect(startOrPauseOrResumeButton).toHaveText('Começar')
     })
 
-    test('should start, reset, start, pause, and reset the timer', async ({ page }) => {
+    test('should start, reset, start, pause, and reset the timer again', async ({ page }) => {
       await expect(timer).toHaveText('01:00:00')
       await expect(startOrPauseOrResumeButton).toHaveText('Começar')
 
