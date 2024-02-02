@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { MediaPlayer, MediaProvider, useMediaRemote, useMediaStore, type MediaPlayerInstance } from '@vidstack/react'
+import { MediaPlayer, MediaProvider } from '@vidstack/react'
 import '@vidstack/react/player/styles/base.css'
 
 import { AudioOrVideoSourceInput, Button, StartOrPauseTimerButton, Timer } from './components'
 
+import usePlayer from './hooks/usePlayer'
 import useTimer from './hooks/useTimer'
 
 import { useTranslation } from 'react-i18next'
@@ -16,27 +17,27 @@ import { FaGithub } from 'react-icons/fa'
 import { ONE_HOUR_IN_SECONDS } from './constants'
 
 export default function App() {
-  const player = useRef<MediaPlayerInstance>(null)
-  const remote = useMediaRemote(player)
   const {
-    paused: playerPaused,
-    currentTime: playerCurrentTime,
-    duration: playerDuration,
-    canPlay: playerCanPlay,
-  } = useMediaStore(player)
+    player,
+    playerPaused,
+    playerCurrentTime,
+    playerDuration,
+    playerCanPlay,
+    playerSource,
+    setPlayerSource,
+    resumePlayer,
+    pausePlayer,
+    resetPlayerCurrentTime,
+    resetPlayer,
+  } = usePlayer()
 
   const [audioMoments, setAudioMoments] = useState<number[] | null>()
-  const [playerSource, setPlayerSource] = useState<string | File>('')
   const [audioShouldUnpause, setAudioShouldUnpause] = useState<boolean>(false)
 
   const { timeLeft, start, pause, reset, isRunning } = useTimer(ONE_HOUR_IN_SECONDS)
   const canResetTimer = timeLeft.getTotalSeconds() < ONE_HOUR_IN_SECONDS
 
   const { t, i18n } = useTranslation('', { keyPrefix: 'app' })
-
-  const resumePlayer = useCallback(() => remote.play(), [remote])
-  const pausePlayer = () => remote.pause()
-  const resetPlayerCurrentTime = () => remote.seek(0)
 
   function handleAudioOrVideoSourceInputChange(input: string | File): void {
     reset()
@@ -46,21 +47,6 @@ export default function App() {
       resetPlayerCurrentTime()
     }
     setPlayerSource(input)
-  }
-
-  async function resetPlayer(): Promise<void> {
-    const playerReset = playerPaused && playerCurrentTime === 0
-    if (!playerReset) {
-      pausePlayer()
-      resetPlayerCurrentTime()
-      if (playerSource instanceof File) {
-        await new Promise((resolve) => {
-          setPlayerSource('')
-          resolve(true)
-        })
-        setPlayerSource(playerSource)
-      }
-    }
   }
 
   function handleRandomAudioMomentsGeneration(): void {
