@@ -5,11 +5,13 @@
     "resetButton": "Zerar"
   },
   "audioOrVideoSourceInput": {
-    "audioOrVideoSourceInputSpan": "ou",
-    "youtubeVideoUrlInputPlaceholder": "Link do youtube"
+    "audioOrVideoSourceInputSpan": "ou"
   },
   "fileInputButton": {
     "fileInputButtonText": "Usar arquivo de áudio ou vídeo"
+  },
+  "youtubeVideoUrlInput": {
+    "placeholder": "Link do youtube"
   },
   "startOrPauseTimerButton": {
     "startTimerButtonText": "Começar",

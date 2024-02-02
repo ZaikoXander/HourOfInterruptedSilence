@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { MediaPlayer, MediaProvider, useMediaRemote, useMediaStore } from '@vidstack/react'
-import type { MediaPlayerInstance } from '@vidstack/react'
+import { MediaPlayer, MediaProvider, useMediaRemote, useMediaStore, type MediaPlayerInstance } from '@vidstack/react'
 import '@vidstack/react/player/styles/base.css'
 
 import { AudioOrVideoSourceInput, Button, StartOrPauseTimerButton, Timer } from './components'
@@ -35,24 +34,25 @@ export default function App() {
 
   const { t, i18n } = useTranslation('', { keyPrefix: 'app' })
 
-  const playAudio = useCallback(() => remote.play(), [remote])
-  const pauseAudio = useCallback(() => remote.pause(), [remote])
+  const resumePlayer = useCallback(() => remote.play(), [remote])
+  const pausePlayer = () => remote.pause()
+  const resetPlayerCurrentTime = () => remote.seek(0)
 
   function handleAudioOrVideoSourceInputChange(input: string | File): void {
     reset()
     if (playerSource !== '') {
       setAudioMoments(null)
-      pauseAudio()
-      remote.seek(0)
+      pausePlayer()
+      resetPlayerCurrentTime()
     }
     setPlayerSource(input)
   }
 
-  async function resetAudio(): Promise<void> {
+  async function resetPlayer(): Promise<void> {
     const playerReset = playerPaused && playerCurrentTime === 0
     if (!playerReset) {
-      pauseAudio()
-      remote.seek(0)
+      pausePlayer()
+      resetPlayerCurrentTime()
       if (playerSource instanceof File) {
         await new Promise((resolve) => {
           setPlayerSource('')
@@ -72,18 +72,16 @@ export default function App() {
 
   function handleStartTimer(): void {
     start()
-    if (playerPaused) {
-      if (audioShouldUnpause) {
-        playAudio()
-        setAudioShouldUnpause(false)
-      }
+    if (playerPaused && audioShouldUnpause) {
+      resumePlayer()
+      setAudioShouldUnpause(false)
     }
   }
 
   function handlePauseTimer(): void {
     pause()
     if (!playerPaused) {
-      pauseAudio()
+      pausePlayer()
       setAudioShouldUnpause(true)
     }
   }
@@ -103,7 +101,7 @@ export default function App() {
     reset()
 
     if (playerCurrentTime > 0) {
-      resetAudio()
+      resetPlayer()
       setAudioMoments(null)
     }
   }
@@ -117,7 +115,7 @@ export default function App() {
       const audioShouldPlay = timeLeft.getTotalSeconds() === secondsToNextMoment
 
       if (audioShouldPlay) {
-        playAudio()
+        resumePlayer()
 
         const updatedAudioMoments = audioMoments.slice(1)
         setAudioMoments(updatedAudioMoments)
@@ -125,7 +123,7 @@ export default function App() {
     }
 
     handleAudioMoments()
-  }, [audioMoments, playAudio, timeLeft])
+  }, [audioMoments, resumePlayer, timeLeft])
 
   useEffect(() => {
     document.title = t('pageTitle')
@@ -151,7 +149,7 @@ export default function App() {
         </div>
       </section>
       <div className='absolute bottom-0 opacity-0 -z-50'>
-        <MediaPlayer src={playerSource} ref={player} onEnd={resetAudio}>
+        <MediaPlayer src={playerSource} ref={player} onEnd={resetPlayer}>
           <MediaProvider />
         </MediaPlayer>
       </div>
