@@ -10,9 +10,11 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await page.goto('/')
 
     timer = page.getByRole('time')
-    startOrPauseOrResumeButton = page.getByRole('button', { name: /Começar|Pausar|Continuar/ })
+    startOrPauseOrResumeButton = page.getByRole('button', {
+      name: /Começar|Pausar|Continuar/,
+    })
     resetButton = page.getByRole('button', { name: 'Zerar' })
-    
+
     const youtubeLinkInput = page.getByPlaceholder('Link do youtube')
     await youtubeLinkInput.click()
     await youtubeLinkInput.fill(youtubeLink)
@@ -31,7 +33,7 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
-    
+
     await startOrPauseOrResumeButton.click()
     await expect(timer).toHaveText('00:59:56')
     await page.waitForTimeout(1000)
@@ -48,7 +50,7 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
-    
+
     await resetButton.click()
     await expect(timer).toHaveText('01:00:00')
     await page.waitForTimeout(1000)
@@ -59,7 +61,9 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await expect(resetButton).toBeDisabled()
   })
 
-  test('should start, reset, start, pause, and reset the timer again', async ({ page }) => {
+  test('should start, reset, start, pause, and reset the timer again', async ({
+    page,
+  }) => {
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Começar')
@@ -89,11 +93,11 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
-    
+
     await startOrPauseOrResumeButton.click()
     await expect(timer).toHaveText('00:59:51')
     await page.waitForTimeout(2000)
-    
+
     await expect(timer).toHaveText('00:59:51')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Continuar')

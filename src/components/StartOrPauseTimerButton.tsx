@@ -25,7 +25,11 @@ export default function StartOrPauseTimerButton({
   }
 
   return (
-    <Button className='bg-green-500' disabled={!canStartPlaying} onClick={handleStartOrPauseTimer}>
+    <Button
+      className='bg-green-500'
+      disabled={!canStartPlaying}
+      onClick={handleStartOrPauseTimer}
+    >
       {startOrPauseTimerButtonText()}
     </Button>
   )

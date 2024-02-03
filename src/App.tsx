@@ -1,10 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { MediaPlayer, MediaProvider, useMediaRemote, useMediaStore, type MediaPlayerInstance } from '@vidstack/react'
+import { MediaPlayer, MediaProvider } from '@vidstack/react'
 import '@vidstack/react/player/styles/base.css'
 
-import { AudioOrVideoSourceInput, Button, StartOrPauseTimerButton, Timer } from './components'
+import {
+  AudioOrVideoSourceInput,
+  Button,
+  StartOrPauseTimerButton,
+  Timer,
+} from './components'
 
+import usePlayer from './hooks/usePlayer'
 import useTimer from './hooks/useTimer'
 
 import { useTranslation } from 'react-i18next'
@@ -16,27 +22,28 @@ import { FaGithub } from 'react-icons/fa'
 import { ONE_HOUR_IN_SECONDS } from './constants'
 
 export default function App() {
-  const player = useRef<MediaPlayerInstance>(null)
-  const remote = useMediaRemote(player)
   const {
-    paused: playerPaused,
-    currentTime: playerCurrentTime,
-    duration: playerDuration,
-    canPlay: playerCanPlay,
-  } = useMediaStore(player)
+    player,
+    playerPaused,
+    playerCurrentTime,
+    playerDuration,
+    playerCanPlay,
+    playerSource,
+    setPlayerSource,
+    resumePlayer,
+    pausePlayer,
+    resetPlayerCurrentTime,
+    resetPlayer,
+  } = usePlayer()
 
   const [audioMoments, setAudioMoments] = useState<number[] | null>()
-  const [playerSource, setPlayerSource] = useState<string | File>('')
   const [audioShouldUnpause, setAudioShouldUnpause] = useState<boolean>(false)
 
-  const { timeLeft, start, pause, reset, isRunning } = useTimer(ONE_HOUR_IN_SECONDS)
+  const { timeLeft, start, pause, reset, isRunning } =
+    useTimer(ONE_HOUR_IN_SECONDS)
   const canResetTimer = timeLeft.getTotalSeconds() < ONE_HOUR_IN_SECONDS
 
   const { t, i18n } = useTranslation('', { keyPrefix: 'app' })
-
-  const resumePlayer = useCallback(() => remote.play(), [remote])
-  const pausePlayer = () => remote.pause()
-  const resetPlayerCurrentTime = () => remote.seek(0)
 
   function handleAudioOrVideoSourceInputChange(input: string | File): void {
     reset()
@@ -48,24 +55,11 @@ export default function App() {
     setPlayerSource(input)
   }
 
-  async function resetPlayer(): Promise<void> {
-    const playerReset = playerPaused && playerCurrentTime === 0
-    if (!playerReset) {
-      pausePlayer()
-      resetPlayerCurrentTime()
-      if (playerSource instanceof File) {
-        await new Promise((resolve) => {
-          setPlayerSource('')
-          resolve(true)
-        })
-        setPlayerSource(playerSource)
-      }
-    }
-  }
-
   function handleRandomAudioMomentsGeneration(): void {
-    const oneHourRandomAudioMomentsGenerator = new OneHourRandomAudioMomentsGenerator(playerDuration)
-    const generatedRandomAudioMoments = oneHourRandomAudioMomentsGenerator.execute()
+    const oneHourRandomAudioMomentsGenerator =
+      new OneHourRandomAudioMomentsGenerator(playerDuration)
+    const generatedRandomAudioMoments =
+      oneHourRandomAudioMomentsGenerator.execute()
 
     setAudioMoments(generatedRandomAudioMoments)
   }
@@ -131,11 +125,15 @@ export default function App() {
   }, [t, i18n.language])
 
   return (
-    <main className='flex flex-col items-center justify-center h-screen bg-[#FFD700] pb-32 gap-40'>
-      <h1 className='text-6xl text-[#333333] font-[Baloo] font-bold drop-shadow shadow-black'>{t('title')}</h1>
+    <main className='flex h-screen flex-col items-center justify-center gap-40 bg-[#FFD700] pb-32'>
+      <h1 className='font-[Baloo] text-6xl font-bold text-[#333333] shadow-black drop-shadow'>
+        {t('title')}
+      </h1>
       <section className='flex flex-col items-center gap-12'>
         <Timer className='mb-10' timeLeft={timeLeft} />
-        <AudioOrVideoSourceInput onChange={handleAudioOrVideoSourceInputChange} />
+        <AudioOrVideoSourceInput
+          onChange={handleAudioOrVideoSourceInputChange}
+        />
         <div className='flex gap-4'>
           <StartOrPauseTimerButton
             isRunning={isRunning}
@@ -143,18 +141,22 @@ export default function App() {
             canStartPlaying={playerCanPlay}
             handleStartOrPauseTimer={handleStartOrPauseTimerButtonClick}
           />
-          <Button className='bg-red-500' disabled={!canResetTimer} onClick={handleResetTimerButtonClick}>
+          <Button
+            className='bg-red-500'
+            disabled={!canResetTimer}
+            onClick={handleResetTimerButtonClick}
+          >
             {t('resetButton')}
           </Button>
         </div>
       </section>
-      <div className='absolute bottom-0 opacity-0 -z-50'>
+      <div className='absolute bottom-0 -z-50 opacity-0'>
         <MediaPlayer src={playerSource} ref={player} onEnd={resetPlayer}>
           <MediaProvider />
         </MediaPlayer>
       </div>
       <a
-        className='absolute top-4 right-5'
+        className='absolute right-5 top-4'
         target='_blank'
         rel='noopener noreferrer'
         href='https://github.com/ZaikoXander/HoraDeSilencioInterrompido'

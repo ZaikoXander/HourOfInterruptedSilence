@@ -7,14 +7,18 @@ interface AudioOrVideoInputProps {
   onChange?: (input: string | File) => void
 }
 
-export default function AudioOrVideoSourceInput({ onChange }: AudioOrVideoInputProps) {
+export default function AudioOrVideoSourceInput({
+  onChange,
+}: AudioOrVideoInputProps) {
   const { t } = useTranslation('', { keyPrefix: 'audioOrVideoSourceInput' })
 
   return (
     <div className='flex flex-col gap-y-4'>
-      <div className='flex items-center gap-4 justify-between pr-4'>
+      <div className='flex items-center justify-between gap-4 pr-4'>
         <FileInputButton onChange={onChange} />
-        <span className='text-2xl font-[Inter] font-semibold'>{t('audioOrVideoSourceInputSpan')}</span>
+        <span className='font-[Inter] text-2xl font-semibold'>
+          {t('audioOrVideoSourceInputSpan')}
+        </span>
       </div>
       <YoutubeVideoUrlInput onChange={onChange} />
     </div>

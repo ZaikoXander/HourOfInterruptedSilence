@@ -1,6 +1,6 @@
-import { test, expect, type Locator } from '@playwright/test';
-import { fileURLToPath } from 'url';
-import path from 'path';
+import { test, expect, type Locator } from '@playwright/test'
+import { fileURLToPath } from 'url'
+import path from 'path'
 
 test.describe.serial('Timer functionality with audio or video file', () => {
   let useAudioOrVideoFileInputButton: Locator
@@ -8,8 +8,8 @@ test.describe.serial('Timer functionality with audio or video file', () => {
   let startOrPauseOrResumeButton: Locator
   let resetButton: Locator
   function generateFilePathByFileName(fileName: string): string {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
+    const __filename = fileURLToPath(import.meta.url)
+    const __dirname = path.dirname(__filename)
 
     return path.join(__dirname, 'audiosOrVideos', fileName)
   }
@@ -22,20 +22,26 @@ test.describe.serial('Timer functionality with audio or video file', () => {
     await page.goto('/')
 
     timer = page.getByRole('time')
-    startOrPauseOrResumeButton = page.getByRole('button', { name: /Começar|Pausar|Continuar/ })
+    startOrPauseOrResumeButton = page.getByRole('button', {
+      name: /Começar|Pausar|Continuar/,
+    })
     resetButton = page.getByRole('button', { name: 'Zerar' })
-    useAudioOrVideoFileInputButton = page.getByRole('button', { name: 'Usar arquivo de áudio ou vídeo' })
+    useAudioOrVideoFileInputButton = page.getByRole('button', {
+      name: 'Usar arquivo de áudio ou vídeo',
+    })
   })
 
   test.describe('with audio file', () => {
     test.beforeEach(async ({ page }) => {
-      page.on('filechooser', async fileChooser => {
-        await fileChooser.setFiles(audioFilePath);
-      });
+      page.on('filechooser', async (fileChooser) => {
+        await fileChooser.setFiles(audioFilePath)
+      })
       await useAudioOrVideoFileInputButton.click()
     })
 
-    test('should start, pause, resume, and reset the timer', async ({ page }) => {
+    test('should start, pause, resume, and reset the timer', async ({
+      page,
+    }) => {
       await expect(timer).toHaveText('01:00:00')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Começar')
@@ -52,7 +58,7 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await startOrPauseOrResumeButton.click()
       await expect(timer).toHaveText('00:59:58')
       await page.waitForTimeout(1000)
-      
+
       await expect(timer).toHaveText('00:59:58')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Continuar')
@@ -76,7 +82,9 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeDisabled()
     })
 
-    test('should start, reset, start, pause, and reset the timer again', async ({ page }) => {
+    test('should start, reset, start, pause, and reset the timer again', async ({
+      page,
+    }) => {
       await expect(timer).toHaveText('01:00:00')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Começar')
@@ -129,13 +137,15 @@ test.describe.serial('Timer functionality with audio or video file', () => {
 
   test.describe('with video file', () => {
     test.beforeEach(async ({ page }) => {
-      page.on('filechooser', async fileChooser => {
-        await fileChooser.setFiles(videoFilePath);
-      });
+      page.on('filechooser', async (fileChooser) => {
+        await fileChooser.setFiles(videoFilePath)
+      })
       await useAudioOrVideoFileInputButton.click()
     })
 
-    test('should start, pause, resume, and reset the timer', async ({ page }) => {
+    test('should start, pause, resume, and reset the timer', async ({
+      page,
+    }) => {
       await expect(timer).toHaveText('01:00:00')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Começar')
@@ -176,7 +186,9 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeDisabled()
     })
 
-    test('should start, reset, start, pause, and reset the timer again', async ({ page }) => {
+    test('should start, reset, start, pause, and reset the timer again', async ({
+      page,
+    }) => {
       await expect(timer).toHaveText('01:00:00')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Começar')
