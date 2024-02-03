@@ -10,7 +10,9 @@ export default function useTimer(initialSeconds: number) {
   useEffect(() => {
     if (isRunning) {
       const intervalId = setInterval(() => {
-        setTimeLeft((prevTimeLeft) => new TimeLeft(prevTimeLeft.getTotalSeconds() - 1))
+        setTimeLeft(
+          (prevTimeLeft) => new TimeLeft(prevTimeLeft.getTotalSeconds() - 1),
+        )
       }, 1000)
 
       return () => clearInterval(intervalId)

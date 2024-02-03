@@ -17,7 +17,8 @@ export default class OneHourRandomAudioMomentsGenerator {
     this.audioTotalDuration = this.audioDuration + this.audioInterval
     this.finalAudioMoment = ONE_HOUR_IN_SECONDS - this.audioTotalDuration
     this.audioMoments = [this.initialAudioMoment, this.finalAudioMoment]
-    this.lastPossibleAudioMoment = this.finalAudioMoment - this.audioTotalDuration * 2
+    this.lastPossibleAudioMoment =
+      this.finalAudioMoment - this.audioTotalDuration * 2
   }
 
   private generateRandomAudioMoment(): number {
@@ -31,7 +32,12 @@ export default class OneHourRandomAudioMomentsGenerator {
   public execute(): number[] {
     for (let i = 0; i < this.randomAudiosPerHour; i++) {
       let randomAudioMoment: number = this.generateRandomAudioMoment()
-      while (this.audioMoments.some((audioMoment) => abs(audioMoment - randomAudioMoment) < this.audioTotalDuration)) {
+      while (
+        this.audioMoments.some(
+          (audioMoment) =>
+            abs(audioMoment - randomAudioMoment) < this.audioTotalDuration,
+        )
+      ) {
         randomAudioMoment = this.generateRandomAudioMoment()
       }
 

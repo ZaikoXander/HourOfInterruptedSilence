@@ -26,7 +26,13 @@ export default function FileInputButton({ onChange }: FileInputButtonProps) {
 
   return (
     <div>
-      <input type='file' ref={inputRef} accept='audio/*, video/*' className='hidden' onChange={handleInputChange} />
+      <input
+        type='file'
+        ref={inputRef}
+        accept='audio/*, video/*'
+        className='hidden'
+        onChange={handleInputChange}
+      />
       <Button onClick={handleButtonClick}>{t('fileInputButtonText')}</Button>
     </div>
   )

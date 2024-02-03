@@ -3,7 +3,12 @@ import { useEffect, useState } from 'react'
 import { MediaPlayer, MediaProvider } from '@vidstack/react'
 import '@vidstack/react/player/styles/base.css'
 
-import { AudioOrVideoSourceInput, Button, StartOrPauseTimerButton, Timer } from './components'
+import {
+  AudioOrVideoSourceInput,
+  Button,
+  StartOrPauseTimerButton,
+  Timer,
+} from './components'
 
 import usePlayer from './hooks/usePlayer'
 import useTimer from './hooks/useTimer'
@@ -34,7 +39,8 @@ export default function App() {
   const [audioMoments, setAudioMoments] = useState<number[] | null>()
   const [audioShouldUnpause, setAudioShouldUnpause] = useState<boolean>(false)
 
-  const { timeLeft, start, pause, reset, isRunning } = useTimer(ONE_HOUR_IN_SECONDS)
+  const { timeLeft, start, pause, reset, isRunning } =
+    useTimer(ONE_HOUR_IN_SECONDS)
   const canResetTimer = timeLeft.getTotalSeconds() < ONE_HOUR_IN_SECONDS
 
   const { t, i18n } = useTranslation('', { keyPrefix: 'app' })
@@ -50,8 +56,10 @@ export default function App() {
   }
 
   function handleRandomAudioMomentsGeneration(): void {
-    const oneHourRandomAudioMomentsGenerator = new OneHourRandomAudioMomentsGenerator(playerDuration)
-    const generatedRandomAudioMoments = oneHourRandomAudioMomentsGenerator.execute()
+    const oneHourRandomAudioMomentsGenerator =
+      new OneHourRandomAudioMomentsGenerator(playerDuration)
+    const generatedRandomAudioMoments =
+      oneHourRandomAudioMomentsGenerator.execute()
 
     setAudioMoments(generatedRandomAudioMoments)
   }
@@ -117,11 +125,15 @@ export default function App() {
   }, [t, i18n.language])
 
   return (
-    <main className='flex flex-col items-center justify-center h-screen bg-[#FFD700] pb-32 gap-40'>
-      <h1 className='text-6xl text-[#333333] font-[Baloo] font-bold drop-shadow shadow-black'>{t('title')}</h1>
+    <main className='flex h-screen flex-col items-center justify-center gap-40 bg-[#FFD700] pb-32'>
+      <h1 className='font-[Baloo] text-6xl font-bold text-[#333333] shadow-black drop-shadow'>
+        {t('title')}
+      </h1>
       <section className='flex flex-col items-center gap-12'>
         <Timer className='mb-10' timeLeft={timeLeft} />
-        <AudioOrVideoSourceInput onChange={handleAudioOrVideoSourceInputChange} />
+        <AudioOrVideoSourceInput
+          onChange={handleAudioOrVideoSourceInputChange}
+        />
         <div className='flex gap-4'>
           <StartOrPauseTimerButton
             isRunning={isRunning}
@@ -129,18 +141,22 @@ export default function App() {
             canStartPlaying={playerCanPlay}
             handleStartOrPauseTimer={handleStartOrPauseTimerButtonClick}
           />
-          <Button className='bg-red-500' disabled={!canResetTimer} onClick={handleResetTimerButtonClick}>
+          <Button
+            className='bg-red-500'
+            disabled={!canResetTimer}
+            onClick={handleResetTimerButtonClick}
+          >
             {t('resetButton')}
           </Button>
         </div>
       </section>
-      <div className='absolute bottom-0 opacity-0 -z-50'>
+      <div className='absolute bottom-0 -z-50 opacity-0'>
         <MediaPlayer src={playerSource} ref={player} onEnd={resetPlayer}>
           <MediaProvider />
         </MediaPlayer>
       </div>
       <a
-        className='absolute top-4 right-5'
+        className='absolute right-5 top-4'
         target='_blank'
         rel='noopener noreferrer'
         href='https://github.com/ZaikoXander/HoraDeSilencioInterrompido'

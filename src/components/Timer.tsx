@@ -22,7 +22,11 @@ export default function Timer({ className, timeLeft }: TimerProps) {
   }
 
   function formatTime(): string {
-    const digits: number[] = [timeLeft.getHours(), timeLeft.getMinutes(), timeLeft.getSeconds()]
+    const digits: number[] = [
+      timeLeft.getHours(),
+      timeLeft.getMinutes(),
+      timeLeft.getSeconds(),
+    ]
     const formattedDigits: string[] = formatDigits(digits)
 
     return formattedDigits.join(':')
@@ -31,8 +35,8 @@ export default function Timer({ className, timeLeft }: TimerProps) {
   return (
     <time
       className={cn(
-        'w-60 flex justify-center rounded py-3 px-4 bg-black shadow shadow-black text-5xl text-[#FFA500]',
-        'font-[Inter]',
+        'flex w-60 justify-center rounded bg-black px-4 py-3 font-[Inter]',
+        'text-5xl text-[#FFA500] shadow shadow-black',
         className,
       )}
     >

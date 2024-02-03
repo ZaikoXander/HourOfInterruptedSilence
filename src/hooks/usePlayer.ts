@@ -1,6 +1,10 @@
 import { useRef, useState } from 'react'
 
-import { useMediaRemote, useMediaStore, type MediaPlayerInstance } from '@vidstack/react'
+import {
+  useMediaRemote,
+  useMediaStore,
+  type MediaPlayerInstance,
+} from '@vidstack/react'
 
 export default function usePlayer() {
   const player = useRef<MediaPlayerInstance>(null)

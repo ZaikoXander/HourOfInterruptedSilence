@@ -9,12 +9,18 @@ interface ButtonProps {
   onClick?: () => void
 }
 
-export default function Button({ children, className, disabled, onClick }: ButtonProps) {
+export default function Button({
+  children,
+  className,
+  disabled,
+  onClick,
+}: ButtonProps) {
   return (
     <button
       type='button'
       className={cn(
-        'bg-blue-500 text-white py-2 px-4 rounded text-2xl font-[Inter] font-bold disabled:opacity-50',
+        'rounded bg-blue-500 px-4 py-2 font-[Inter] text-2xl font-bold',
+        'text-white disabled:opacity-50',
         className,
       )}
       disabled={disabled}
