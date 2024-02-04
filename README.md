@@ -18,11 +18,13 @@ You can access the website using the following URLs:
 This project is built using the following technologies:
 
 - ⚡ Vite: A fast build tool for modern web applications.
-- <img align="center" width="12" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" /> React: A JavaScript library for building user interfaces.
-- <img align="center" width="12" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" /> Typescript: A typed superset of JavaScript that compiles to plain JavaScript.
-- 🎭 Playwright: An end-to-end testing framework for web applications.
-- <img align="center" width="12" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" /> Tailwind CSS: A utility-first CSS framework for rapid UI development.
+- <img align="center" width="16" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" /> React: A JavaScript library for building user interfaces.
+- <img align="center" width="16" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" /> Typescript: A typed superset of JavaScript that compiles to plain JavaScript.
+- 📦 Bun: An all-in-one toolkit for Javascript and Typescript apps.
+- <img align="center" width="16" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" /> Tailwind CSS: A utility-first CSS framework for rapid UI development.
+- 🎵 Vidstack: A video or audio player library. 
 - 🌎 i18next: A internationalization framework for browser or any other JavaScript environment.
+- 🎭 Playwright: An end-to-end testing framework for web applications.
 
 ## Contributing
 
