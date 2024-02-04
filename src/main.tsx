@@ -8,7 +8,6 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 
 import './index.css'
 
-// biome-ignore lint/style/noNonNullAssertion: <explanation>
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
