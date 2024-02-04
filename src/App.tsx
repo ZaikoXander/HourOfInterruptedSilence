@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import cn from './lib/cn'
+
 import { MediaPlayer, MediaProvider } from '@vidstack/react'
 import '@vidstack/react/player/styles/base.css'
 
@@ -8,18 +10,19 @@ import {
   Button,
   StartOrPauseTimerButton,
   Timer,
+  VolumeControl,
 } from './components'
 
 import usePlayer from './hooks/usePlayer'
 import useTimer from './hooks/useTimer'
 
-import { useTranslation } from 'react-i18next'
-
 import OneHourRandomAudioMomentsGenerator from './classes/oneHourRandomAudioMomentsGenerator'
 
-import { FaGithub } from 'react-icons/fa'
+import { useTranslation } from 'react-i18next'
 
 import { ONE_HOUR_IN_SECONDS } from './constants'
+
+import { FaGithub } from 'react-icons/fa'
 
 export default function App() {
   const {
@@ -28,6 +31,10 @@ export default function App() {
     playerCurrentTime,
     playerDuration,
     playerCanPlay,
+    playerVolume,
+    changePlayerVolume,
+    playerMuted,
+    setPlayerMuted,
     playerSource,
     setPlayerSource,
     resumePlayer,
@@ -125,12 +132,28 @@ export default function App() {
   }, [t, i18n.language])
 
   return (
-    <main className='flex h-screen flex-col items-center justify-center gap-40 bg-[#FFD700] pb-32'>
-      <h1 className='font-[Baloo] text-6xl font-bold text-[#333333] shadow-black drop-shadow'>
+    <main
+      className={cn(
+        'flex h-screen flex-col items-center justify-center gap-40',
+        'bg-[#FFD700] pb-32',
+      )}
+    >
+      <h1
+        className={cn(
+          'font-[Baloo] text-6xl font-bold text-[#333333] shadow-black',
+          'drop-shadow',
+        )}
+      >
         {t('title')}
       </h1>
       <section className='flex flex-col items-center gap-12'>
         <Timer className='mb-10' timeLeft={timeLeft} />
+        <VolumeControl
+          playerVolume={playerVolume}
+          changePlayerVolume={changePlayerVolume}
+          playerMuted={playerMuted}
+          setPlayerMuted={setPlayerMuted}
+        />
         <AudioOrVideoSourceInput
           onChange={handleAudioOrVideoSourceInputChange}
         />
@@ -151,7 +174,13 @@ export default function App() {
         </div>
       </section>
       <div className='absolute bottom-0 -z-50 opacity-0'>
-        <MediaPlayer src={playerSource} ref={player} onEnd={resetPlayer}>
+        <MediaPlayer
+          src={playerSource}
+          ref={player}
+          volume={playerVolume}
+          muted={playerMuted}
+          onEnd={resetPlayer}
+        >
           <MediaProvider />
         </MediaPlayer>
       </div>
