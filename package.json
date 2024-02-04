@@ -1,5 +1,5 @@
 {
-  "name": "hora-de-silencio-interrompido",
+  "name": "hour-of-interrupted-silence",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,10 +9,10 @@
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write '**/*.{ts,tsx}'",
-    "pw": "bunx playwright test",
-    "pw:sr": "bunx playwright show-report",
-    "pw:ui": "bunx playwright test --ui",
-    "pw:cg": "bunx playwright codegen"
+    "pw": "playwright test",
+    "pw:sr": "playwright show-report",
+    "pw:ui": "playwright test --ui",
+    "pw:cg": "playwright codegen"
   },
   "dependencies": {
     "@vercel/analytics": "^1.1.1",
