@@ -10,6 +10,7 @@ import {
   Button,
   StartOrPauseTimerButton,
   Timer,
+  VolumeControl,
 } from './components'
 
 import usePlayer from './hooks/usePlayer'
@@ -21,7 +22,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ONE_HOUR_IN_SECONDS } from './constants'
 
-import { FaGithub, FaVolumeMute, FaVolumeUp } from 'react-icons/fa'
+import { FaGithub } from 'react-icons/fa'
 
 export default function App() {
   const {
@@ -147,32 +148,12 @@ export default function App() {
       </h1>
       <section className='flex flex-col items-center gap-12'>
         <Timer className='mb-10' timeLeft={timeLeft} />
-        <div className='flex gap-2 transition-all duration-1000'>
-          <button
-            type='button'
-            onClick={() => setPlayerMuted(!playerMuted)}
-            className='transition duration-700 ease-in-out hover:scale-110'
-          >
-            {playerMuted ? (
-              <FaVolumeMute size={24} />
-            ) : (
-              <FaVolumeUp size={24} />
-            )}
-          </button>
-          <label id='volume-control' className='sr-only'>
-            Volume
-          </label>
-          <input
-            type='range'
-            min='0'
-            max='1'
-            step='0.01'
-            value={playerMuted ? 0 : playerVolume}
-            onChange={(e) => changePlayerVolume(parseFloat(e.target.value))}
-            className='w-16 accent-blue-500'
-            aria-labelledby='volume-control'
-          />
-        </div>
+        <VolumeControl
+          playerVolume={playerVolume}
+          changePlayerVolume={changePlayerVolume}
+          playerMuted={playerMuted}
+          setPlayerMuted={setPlayerMuted}
+        />
         <AudioOrVideoSourceInput
           onChange={handleAudioOrVideoSourceInputChange}
         />
