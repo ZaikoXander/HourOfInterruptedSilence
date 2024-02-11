@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 
 import usePlayer from './hooks/usePlayer'
@@ -8,6 +8,10 @@ import {
   playerVolumeAtom,
   playerMutedAtom,
 } from './atoms/player'
+import {
+  audioMomentsAtom,
+  audioMomentShouldUnpauseAtom,
+} from './atoms/audioMoments'
 import {
   timeLeftAtom,
   timerIsRunningAtom,
@@ -56,8 +60,10 @@ export default function App() {
   const [playerVolume, changePlayerVolume] = useAtom(playerVolumeAtom)
   const [playerMuted, setPlayerMuted] = useAtom(playerMutedAtom)
 
-  const [audioMoments, setAudioMoments] = useState<number[] | null>()
-  const [audioShouldUnpause, setAudioShouldUnpause] = useState<boolean>(false)
+  const [audioMoments, setAudioMoments] = useAtom(audioMomentsAtom)
+  const [audioMomentShouldUnpause, setAudioMomentShouldUnpause] = useAtom(
+    audioMomentShouldUnpauseAtom,
+  )
 
   const timeLeft = useAtomValue(timeLeftAtom)
   const timerIsRunning = useAtomValue(timerIsRunningAtom)
@@ -91,9 +97,9 @@ export default function App() {
 
   function handleStartTimer(): void {
     startTimer()
-    if (playerPaused && audioShouldUnpause) {
+    if (playerPaused && audioMomentShouldUnpause) {
       resumePlayer()
-      setAudioShouldUnpause(false)
+      setAudioMomentShouldUnpause(false)
     }
   }
 
@@ -101,7 +107,7 @@ export default function App() {
     pauseTimer()
     if (!playerPaused) {
       pausePlayer()
-      setAudioShouldUnpause(true)
+      setAudioMomentShouldUnpause(true)
     }
   }
 
@@ -142,7 +148,7 @@ export default function App() {
     }
 
     handleAudioMoments()
-  }, [audioMoments, resumePlayer, timeLeft])
+  }, [audioMoments, resumePlayer, setAudioMoments, timeLeft])
 
   useEffect(() => {
     document.title = t('pageTitle')
