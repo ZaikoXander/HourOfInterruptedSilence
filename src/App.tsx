@@ -178,8 +178,6 @@ export default function App() {
         />
         <div className='flex gap-4'>
           <StartOrPauseTimerButton
-            isRunning={timerIsRunning}
-            canResetTimer={timerCanReset}
             canStartPlaying={playerCanPlay}
             handleStartOrPauseTimer={handleStartOrPauseTimerButtonClick}
           />
