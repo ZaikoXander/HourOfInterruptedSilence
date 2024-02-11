@@ -178,8 +178,8 @@ export default function App() {
         />
         <div className='flex gap-4'>
           <StartOrPauseTimerButton
-            canStartPlaying={playerCanPlay}
-            handleStartOrPauseTimer={handleStartOrPauseTimerButtonClick}
+            disabled={!playerCanPlay}
+            onClick={handleStartOrPauseTimerButtonClick}
           />
           <Button
             className='bg-red-500'
