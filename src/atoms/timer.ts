@@ -8,26 +8,26 @@ import { ONE_HOUR_IN_SECONDS } from '../constants'
 
 const initialTimeLeft = new TimeLeft(ONE_HOUR_IN_SECONDS)
 
-export const timeLeftAtom = atomWithReset<TimeLeft>(initialTimeLeft)
+const timeLeftAtom = atomWithReset<TimeLeft>(initialTimeLeft)
 
-export const timerIsRunningAtom = atom<boolean>(false)
+const timerIsRunningAtom = atom<boolean>(false)
 
-export const startTimerAtom = atom(null, (_get, set) => {
+const startTimerAtom = atom(null, (_get, set) => {
   set(timerIsRunningAtom, true)
 })
-export const pauseTimerAtom = atom(null, (_get, set) => {
+const pauseTimerAtom = atom(null, (_get, set) => {
   set(timerIsRunningAtom, false)
 })
-export const resetTimerAtom = atom(null, (_get, set) => {
+const resetTimerAtom = atom(null, (_get, set) => {
   set(pauseTimerAtom)
   set(timeLeftAtom, RESET)
 })
 
-export const timerCanResetAtom = atom<boolean>(
+const timerCanResetAtom = atom<boolean>(
   (get) => get(timeLeftAtom).getTotalSeconds() < ONE_HOUR_IN_SECONDS,
 )
 
-export const timeTickingEffect = atomEffect((get, set) => {
+const timeTickingEffect = atomEffect((get, set) => {
   if (get(timerIsRunningAtom) === true) {
     const intervalId = setInterval(() => {
       set(
@@ -40,3 +40,13 @@ export const timeTickingEffect = atomEffect((get, set) => {
     return () => clearInterval(intervalId)
   }
 })
+
+export {
+  timeLeftAtom,
+  timerIsRunningAtom,
+  startTimerAtom,
+  pauseTimerAtom,
+  resetTimerAtom,
+  timerCanResetAtom,
+  timeTickingEffect,
+}
