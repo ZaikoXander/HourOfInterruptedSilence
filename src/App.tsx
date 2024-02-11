@@ -57,8 +57,8 @@ export default function App() {
   } = usePlayer()
 
   const [playerSource, setPlayerSource] = useAtom(playerSourceAtom)
-  const [playerVolume, changePlayerVolume] = useAtom(playerVolumeAtom)
-  const [playerMuted, setPlayerMuted] = useAtom(playerMutedAtom)
+  const playerVolume = useAtomValue(playerVolumeAtom)
+  const playerMuted = useAtomValue(playerMutedAtom)
 
   const [audioMoments, setAudioMoments] = useAtom(audioMomentsAtom)
   const [audioMomentShouldUnpause, setAudioMomentShouldUnpause] = useAtom(
@@ -172,12 +172,7 @@ export default function App() {
       </h1>
       <section className='flex flex-col items-center gap-12'>
         <Timer className='mb-10' timeLeft={timeLeft} />
-        <VolumeControl
-          playerVolume={playerVolume}
-          changePlayerVolume={changePlayerVolume}
-          playerMuted={playerMuted}
-          setPlayerMuted={setPlayerMuted}
-        />
+        <VolumeControl />
         <AudioOrVideoSourceInput
           onChange={handleAudioOrVideoSourceInputChange}
         />
