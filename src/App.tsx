@@ -1,4 +1,17 @@
 import { useEffect, useState } from 'react'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+
+import usePlayer from './hooks/usePlayer'
+
+import {
+  timeLeftAtom,
+  timerIsRunningAtom,
+  startTimerAtom,
+  pauseTimerAtom,
+  resetTimerAtom,
+  timerCanResetAtom,
+  timeTickingEffect,
+} from './atoms/timer'
 
 import cn from './lib/cn'
 
@@ -12,9 +25,6 @@ import {
   Timer,
   VolumeControl,
 } from './components'
-
-import usePlayer from './hooks/usePlayer'
-import useTimer from './hooks/useTimer'
 
 import OneHourRandomAudioMomentsGenerator from './classes/oneHourRandomAudioMomentsGenerator'
 
@@ -46,14 +56,18 @@ export default function App() {
   const [audioMoments, setAudioMoments] = useState<number[] | null>()
   const [audioShouldUnpause, setAudioShouldUnpause] = useState<boolean>(false)
 
-  const { timeLeft, start, pause, reset, isRunning } =
-    useTimer(ONE_HOUR_IN_SECONDS)
-  const canResetTimer = timeLeft.getTotalSeconds() < ONE_HOUR_IN_SECONDS
+  const timeLeft = useAtomValue(timeLeftAtom)
+  const timerIsRunning = useAtomValue(timerIsRunningAtom)
+  const startTimer = useSetAtom(startTimerAtom)
+  const pauseTimer = useSetAtom(pauseTimerAtom)
+  const resetTimer = useSetAtom(resetTimerAtom)
+  const timerCanReset = useAtomValue(timerCanResetAtom)
+  useAtom(timeTickingEffect)
 
   const { t, i18n } = useTranslation('', { keyPrefix: 'app' })
 
   function handleAudioOrVideoSourceInputChange(input: string | File): void {
-    reset()
+    resetTimer()
     if (playerSource !== '') {
       setAudioMoments(null)
       pausePlayer()
@@ -72,7 +86,7 @@ export default function App() {
   }
 
   function handleStartTimer(): void {
-    start()
+    startTimer()
     if (playerPaused && audioShouldUnpause) {
       resumePlayer()
       setAudioShouldUnpause(false)
@@ -80,7 +94,7 @@ export default function App() {
   }
 
   function handlePauseTimer(): void {
-    pause()
+    pauseTimer()
     if (!playerPaused) {
       pausePlayer()
       setAudioShouldUnpause(true)
@@ -90,7 +104,7 @@ export default function App() {
   function handleStartOrPauseTimerButtonClick(): void {
     if (!audioMoments) handleRandomAudioMomentsGeneration()
 
-    if (isRunning) {
+    if (timerIsRunning) {
       handlePauseTimer()
       return
     }
@@ -99,7 +113,7 @@ export default function App() {
   }
 
   function handleResetTimerButtonClick(): void {
-    reset()
+    resetTimer()
 
     if (playerCurrentTime > 0) {
       resetPlayer()
@@ -159,14 +173,14 @@ export default function App() {
         />
         <div className='flex gap-4'>
           <StartOrPauseTimerButton
-            isRunning={isRunning}
-            canResetTimer={canResetTimer}
+            isRunning={timerIsRunning}
+            canResetTimer={timerCanReset}
             canStartPlaying={playerCanPlay}
             handleStartOrPauseTimer={handleStartOrPauseTimerButtonClick}
           />
           <Button
             className='bg-red-500'
-            disabled={!canResetTimer}
+            disabled={!timerCanReset}
             onClick={handleResetTimerButtonClick}
           >
             {t('resetButton')}
