@@ -1,18 +1,12 @@
+import { useAtom } from 'jotai'
+import { playerMutedAtom, playerVolumeAtom } from '../atoms/player'
+
 import { FaVolumeMute, FaVolumeUp } from 'react-icons/fa'
 
-interface VolumeControlProps {
-  playerVolume: number
-  changePlayerVolume: (volume: number) => void
-  playerMuted: boolean
-  setPlayerMuted: (muted: boolean) => void
-}
+export default function VolumeControl() {
+  const [playerVolume, changePlayerVolume] = useAtom(playerVolumeAtom)
+  const [playerMuted, setPlayerMuted] = useAtom(playerMutedAtom)
 
-export default function VolumeControl({
-  playerVolume,
-  changePlayerVolume,
-  playerMuted,
-  setPlayerMuted,
-}: VolumeControlProps) {
   return (
     <div className='flex gap-2'>
       <button

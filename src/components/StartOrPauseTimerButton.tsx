@@ -1,25 +1,27 @@
+import { useAtomValue } from 'jotai'
+import { timerIsRunningAtom, timerCanResetAtom } from '../atoms/timer'
+
 import { useTranslation } from 'react-i18next'
 
 import Button from './Button'
 
 interface StartOrPauseTimerButtonProps {
-  isRunning: boolean
-  canResetTimer: boolean
   canStartPlaying: boolean
   handleStartOrPauseTimer: () => void
 }
 
 export default function StartOrPauseTimerButton({
-  isRunning,
-  canResetTimer,
   canStartPlaying,
   handleStartOrPauseTimer,
 }: StartOrPauseTimerButtonProps) {
+  const timerIsRunning = useAtomValue(timerIsRunningAtom)
+  const timerCanReset = useAtomValue(timerCanResetAtom)
+
   const { t } = useTranslation('', { keyPrefix: 'startOrPauseTimerButton' })
 
   function startOrPauseTimerButtonText() {
-    if (isRunning) return t('pauseTimerButtonText')
-    if (canResetTimer) return t('resumeTimerButtonText')
+    if (timerIsRunning) return t('pauseTimerButtonText')
+    if (timerCanReset) return t('resumeTimerButtonText')
 
     return t('startTimerButtonText')
   }

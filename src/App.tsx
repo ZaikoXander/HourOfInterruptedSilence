@@ -1,4 +1,26 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+
+import usePlayer from './hooks/usePlayer'
+
+import {
+  playerSourceAtom,
+  playerVolumeAtom,
+  playerMutedAtom,
+} from './atoms/player'
+import {
+  audioMomentsAtom,
+  audioMomentShouldUnpauseAtom,
+} from './atoms/audioMoments'
+import {
+  timeLeftAtom,
+  timerIsRunningAtom,
+  startTimerAtom,
+  pauseTimerAtom,
+  resetTimerAtom,
+  timerCanResetAtom,
+  timeTickingEffect,
+} from './atoms/timer'
 
 import cn from './lib/cn'
 
@@ -12,9 +34,6 @@ import {
   Timer,
   VolumeControl,
 } from './components'
-
-import usePlayer from './hooks/usePlayer'
-import useTimer from './hooks/useTimer'
 
 import OneHourRandomAudioMomentsGenerator from './classes/oneHourRandomAudioMomentsGenerator'
 
@@ -31,34 +50,39 @@ export default function App() {
     playerCurrentTime,
     playerDuration,
     playerCanPlay,
-    playerVolume,
-    changePlayerVolume,
-    playerMuted,
-    setPlayerMuted,
-    playerSource,
-    setPlayerSource,
     resumePlayer,
     pausePlayer,
     resetPlayerCurrentTime,
     resetPlayer,
   } = usePlayer()
 
-  const [audioMoments, setAudioMoments] = useState<number[] | null>()
-  const [audioShouldUnpause, setAudioShouldUnpause] = useState<boolean>(false)
+  const [playerSource, setPlayerSource] = useAtom(playerSourceAtom)
+  const playerVolume = useAtomValue(playerVolumeAtom)
+  const playerMuted = useAtomValue(playerMutedAtom)
 
-  const { timeLeft, start, pause, reset, isRunning } =
-    useTimer(ONE_HOUR_IN_SECONDS)
-  const canResetTimer = timeLeft.getTotalSeconds() < ONE_HOUR_IN_SECONDS
+  const [audioMoments, setAudioMoments] = useAtom(audioMomentsAtom)
+  const [audioMomentShouldUnpause, setAudioMomentShouldUnpause] = useAtom(
+    audioMomentShouldUnpauseAtom,
+  )
+
+  const timeLeft = useAtomValue(timeLeftAtom)
+  const timerIsRunning = useAtomValue(timerIsRunningAtom)
+  const startTimer = useSetAtom(startTimerAtom)
+  const pauseTimer = useSetAtom(pauseTimerAtom)
+  const resetTimer = useSetAtom(resetTimerAtom)
+  const timerCanReset = useAtomValue(timerCanResetAtom)
+  useAtom(timeTickingEffect)
 
   const { t, i18n } = useTranslation('', { keyPrefix: 'app' })
 
   function handleAudioOrVideoSourceInputChange(input: string | File): void {
-    reset()
+    resetTimer()
     if (playerSource !== '') {
       setAudioMoments(null)
       pausePlayer()
       resetPlayerCurrentTime()
     }
+
     setPlayerSource(input)
   }
 
@@ -72,25 +96,25 @@ export default function App() {
   }
 
   function handleStartTimer(): void {
-    start()
-    if (playerPaused && audioShouldUnpause) {
+    startTimer()
+    if (playerPaused && audioMomentShouldUnpause) {
       resumePlayer()
-      setAudioShouldUnpause(false)
+      setAudioMomentShouldUnpause(false)
     }
   }
 
   function handlePauseTimer(): void {
-    pause()
+    pauseTimer()
     if (!playerPaused) {
       pausePlayer()
-      setAudioShouldUnpause(true)
+      setAudioMomentShouldUnpause(true)
     }
   }
 
   function handleStartOrPauseTimerButtonClick(): void {
     if (!audioMoments) handleRandomAudioMomentsGeneration()
 
-    if (isRunning) {
+    if (timerIsRunning) {
       handlePauseTimer()
       return
     }
@@ -99,7 +123,7 @@ export default function App() {
   }
 
   function handleResetTimerButtonClick(): void {
-    reset()
+    resetTimer()
 
     if (playerCurrentTime > 0) {
       resetPlayer()
@@ -124,7 +148,7 @@ export default function App() {
     }
 
     handleAudioMoments()
-  }, [audioMoments, resumePlayer, timeLeft])
+  }, [audioMoments, resumePlayer, setAudioMoments, timeLeft])
 
   useEffect(() => {
     document.title = t('pageTitle')
@@ -147,26 +171,19 @@ export default function App() {
         {t('title')}
       </h1>
       <section className='flex flex-col items-center gap-12'>
-        <Timer className='mb-10' timeLeft={timeLeft} />
-        <VolumeControl
-          playerVolume={playerVolume}
-          changePlayerVolume={changePlayerVolume}
-          playerMuted={playerMuted}
-          setPlayerMuted={setPlayerMuted}
-        />
+        <Timer className='mb-10' />
+        <VolumeControl />
         <AudioOrVideoSourceInput
           onChange={handleAudioOrVideoSourceInputChange}
         />
         <div className='flex gap-4'>
           <StartOrPauseTimerButton
-            isRunning={isRunning}
-            canResetTimer={canResetTimer}
             canStartPlaying={playerCanPlay}
             handleStartOrPauseTimer={handleStartOrPauseTimerButtonClick}
           />
           <Button
             className='bg-red-500'
-            disabled={!canResetTimer}
+            disabled={!timerCanReset}
             onClick={handleResetTimerButtonClick}
           >
             {t('resetButton')}
