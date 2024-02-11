@@ -4,6 +4,11 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import usePlayer from './hooks/usePlayer'
 
 import {
+  playerSourceAtom,
+  playerVolumeAtom,
+  playerMutedAtom,
+} from './atoms/player'
+import {
   timeLeftAtom,
   timerIsRunningAtom,
   startTimerAtom,
@@ -41,17 +46,15 @@ export default function App() {
     playerCurrentTime,
     playerDuration,
     playerCanPlay,
-    playerVolume,
-    changePlayerVolume,
-    playerMuted,
-    setPlayerMuted,
-    playerSource,
-    setPlayerSource,
     resumePlayer,
     pausePlayer,
     resetPlayerCurrentTime,
     resetPlayer,
   } = usePlayer()
+
+  const [playerSource, setPlayerSource] = useAtom(playerSourceAtom)
+  const [playerVolume, changePlayerVolume] = useAtom(playerVolumeAtom)
+  const [playerMuted, setPlayerMuted] = useAtom(playerMutedAtom)
 
   const [audioMoments, setAudioMoments] = useState<number[] | null>()
   const [audioShouldUnpause, setAudioShouldUnpause] = useState<boolean>(false)
@@ -73,6 +76,7 @@ export default function App() {
       pausePlayer()
       resetPlayerCurrentTime()
     }
+
     setPlayerSource(input)
   }
 

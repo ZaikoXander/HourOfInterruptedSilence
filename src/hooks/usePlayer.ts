@@ -1,4 +1,7 @@
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
+import { useAtom } from 'jotai'
+
+import { playerSourceAtom } from '../atoms/player'
 
 import {
   useMediaRemote,
@@ -6,30 +9,12 @@ import {
   type MediaPlayerInstance,
 } from '@vidstack/react'
 
-const volumeAtFifthPercent = 0.5
-
 export default function usePlayer() {
   const player = useRef<MediaPlayerInstance>(null)
   const remote = useMediaRemote(player)
-
   const { paused, currentTime, duration, canPlay } = useMediaStore(player)
 
-  const [playerSource, setPlayerSource] = useState<string | File>('')
-  const [playerVolume, setPlayerVolume] = useState<number>(volumeAtFifthPercent)
-  const [playerMuted, setPlayerMuted] = useState<boolean>(false)
-
-  function changePlayerVolume(volume: number) {
-    if (volume === 0) {
-      setPlayerMuted(true)
-      setPlayerVolume(volumeAtFifthPercent)
-
-      return
-    }
-
-    if (playerMuted) setPlayerMuted(false)
-
-    setPlayerVolume(volume)
-  }
+  const [playerSource, setPlayerSource] = useAtom(playerSourceAtom)
 
   const pausePlayer = () => remote.pause()
   const resetPlayerCurrentTime = () => remote.seek(0)
@@ -55,12 +40,6 @@ export default function usePlayer() {
     playerCurrentTime: currentTime,
     playerDuration: duration,
     playerCanPlay: canPlay,
-    playerVolume,
-    changePlayerVolume,
-    playerMuted,
-    setPlayerMuted,
-    playerSource,
-    setPlayerSource,
     resumePlayer: () => remote.play(),
     pausePlayer,
     resetPlayerCurrentTime,
