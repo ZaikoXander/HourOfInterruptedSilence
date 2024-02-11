@@ -171,7 +171,7 @@ export default function App() {
         {t('title')}
       </h1>
       <section className='flex flex-col items-center gap-12'>
-        <Timer className='mb-10' timeLeft={timeLeft} />
+        <Timer className='mb-10' />
         <VolumeControl />
         <AudioOrVideoSourceInput
           onChange={handleAudioOrVideoSourceInputChange}

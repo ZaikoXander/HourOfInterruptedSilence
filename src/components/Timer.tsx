@@ -1,16 +1,18 @@
-import cn from '../lib/cn'
+import { useAtomValue } from 'jotai'
+import { timeLeftAtom } from '../atoms/timer'
 
-import type TimeLeft from '../classes/timeLeft'
+import cn from '../lib/cn'
 
 const TIMER_FORMAT_LENGTH = 2
 const TIMER_FORMAT_PADDING = '0'
 
 interface TimerProps {
   className?: string
-  timeLeft: TimeLeft
 }
 
-export default function Timer({ className, timeLeft }: TimerProps) {
+export default function Timer({ className }: TimerProps) {
+  const timeLeft = useAtomValue(timeLeftAtom)
+
   function formatDigit(digit: number): string {
     const stringDigit: string = digit.toString()
 
