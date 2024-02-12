@@ -6,13 +6,13 @@ import { useTranslation } from 'react-i18next'
 import Button from './Button'
 
 interface StartOrPauseTimerButtonProps {
-  canStartPlaying: boolean
-  handleStartOrPauseTimer: () => void
+  disabled: boolean
+  onClick: () => void
 }
 
 export default function StartOrPauseTimerButton({
-  canStartPlaying,
-  handleStartOrPauseTimer,
+  disabled,
+  onClick,
 }: StartOrPauseTimerButtonProps) {
   const timerIsRunning = useAtomValue(timerIsRunningAtom)
   const timerCanReset = useAtomValue(timerCanResetAtom)
@@ -27,11 +27,7 @@ export default function StartOrPauseTimerButton({
   }
 
   return (
-    <Button
-      className='bg-green-500'
-      disabled={!canStartPlaying}
-      onClick={handleStartOrPauseTimer}
-    >
+    <Button className='bg-green-500' disabled={disabled} onClick={onClick}>
       {startOrPauseTimerButtonText()}
     </Button>
   )
