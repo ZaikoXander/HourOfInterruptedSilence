@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useResetAtom } from 'jotai/utils'
 
 import usePlayer from './hooks/usePlayer'
 
@@ -61,6 +62,7 @@ export default function App() {
   const playerMuted = useAtomValue(playerMutedAtom)
 
   const [audioMoments, setAudioMoments] = useAtom(audioMomentsAtom)
+  const resetAudioMoments = useResetAtom(audioMomentsAtom)
   const [audioMomentShouldUnpause, setAudioMomentShouldUnpause] = useAtom(
     audioMomentShouldUnpauseAtom,
   )
@@ -78,7 +80,7 @@ export default function App() {
   function handleAudioOrVideoSourceInputChange(input: string | File): void {
     resetTimer()
     if (playerSource !== '') {
-      setAudioMoments(null)
+      resetAudioMoments()
       pausePlayer()
       resetPlayerCurrentTime()
     }
@@ -127,7 +129,7 @@ export default function App() {
 
     if (playerCurrentTime > 0) {
       resetPlayer()
-      setAudioMoments(null)
+      resetAudioMoments()
     }
   }
 
