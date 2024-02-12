@@ -1,37 +1,32 @@
 import { useAtomValue } from 'jotai'
-import { timeLeftAtom } from '../atoms/timer'
+import {
+  timerHoursAtom,
+  timerMinutesAtom,
+  timerSecondsAtom,
+} from '../atoms/timer'
 
 import cn from '../lib/cn'
 
 const TIMER_FORMAT_LENGTH = 2
 const TIMER_FORMAT_PADDING = '0'
 
+function formatDigit(digit: number): string {
+  return digit.toString().padStart(TIMER_FORMAT_LENGTH, TIMER_FORMAT_PADDING)
+}
+
 interface TimerProps {
   className?: string
 }
 
 export default function Timer({ className }: TimerProps) {
-  const timeLeft = useAtomValue(timeLeftAtom)
-
-  function formatDigit(digit: number): string {
-    const stringDigit: string = digit.toString()
-
-    return stringDigit.padStart(TIMER_FORMAT_LENGTH, TIMER_FORMAT_PADDING)
-  }
-
-  function formatDigits(digits: number[]): string[] {
-    return digits.map(formatDigit)
-  }
+  const timerHours = useAtomValue(timerHoursAtom)
+  const timerMinutes = useAtomValue(timerMinutesAtom)
+  const timerSeconds = useAtomValue(timerSecondsAtom)
 
   function formatTime(): string {
-    const digits: number[] = [
-      timeLeft.getHours(),
-      timeLeft.getMinutes(),
-      timeLeft.getSeconds(),
-    ]
-    const formattedDigits: string[] = formatDigits(digits)
+    const digits: number[] = [timerHours, timerMinutes, timerSeconds]
 
-    return formattedDigits.join(':')
+    return digits.map(formatDigit).join(':')
   }
 
   return (

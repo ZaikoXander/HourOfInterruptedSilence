@@ -14,7 +14,7 @@ import {
   audioMomentShouldUnpauseAtom,
 } from './atoms/audioMoments'
 import {
-  timeLeftAtom,
+  timerTotalSecondsAtom,
   timerIsRunningAtom,
   startTimerAtom,
   pauseTimerAtom,
@@ -67,7 +67,7 @@ export default function App() {
     audioMomentShouldUnpauseAtom,
   )
 
-  const timeLeft = useAtomValue(timeLeftAtom)
+  const timerTotalSeconds = useAtomValue(timerTotalSecondsAtom)
   const timerIsRunning = useAtomValue(timerIsRunningAtom)
   const startTimer = useSetAtom(startTimerAtom)
   const pauseTimer = useSetAtom(pauseTimerAtom)
@@ -139,7 +139,7 @@ export default function App() {
 
       const nextMoment = audioMoments[0]
       const secondsToNextMoment = ONE_HOUR_IN_SECONDS - nextMoment
-      const audioShouldPlay = timeLeft.getTotalSeconds() === secondsToNextMoment
+      const audioShouldPlay = timerTotalSeconds === secondsToNextMoment
 
       if (audioShouldPlay) {
         resumePlayer()
@@ -150,7 +150,7 @@ export default function App() {
     }
 
     handleAudioMoments()
-  }, [audioMoments, resumePlayer, setAudioMoments, timeLeft])
+  }, [audioMoments, timerTotalSeconds, resumePlayer, setAudioMoments])
 
   useEffect(() => {
     document.title = t('pageTitle')
