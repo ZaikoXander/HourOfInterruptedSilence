@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useResetAtom } from 'jotai/utils'
 
 import usePlayer from './hooks/usePlayer'
 
@@ -10,10 +11,12 @@ import {
 } from './atoms/player'
 import {
   audioMomentsAtom,
+  generateRandomAudioMomentsAtom,
+  removeActualAudioMomentAtom,
   audioMomentShouldUnpauseAtom,
+  audioMomentShouldPlayAtom,
 } from './atoms/audioMoments'
 import {
-  timeLeftAtom,
   timerIsRunningAtom,
   startTimerAtom,
   pauseTimerAtom,
@@ -35,11 +38,7 @@ import {
   VolumeControl,
 } from './components'
 
-import OneHourRandomAudioMomentsGenerator from './classes/oneHourRandomAudioMomentsGenerator'
-
 import { useTranslation } from 'react-i18next'
-
-import { ONE_HOUR_IN_SECONDS } from './constants'
 
 import { FaGithub } from 'react-icons/fa'
 
@@ -60,12 +59,15 @@ export default function App() {
   const playerVolume = useAtomValue(playerVolumeAtom)
   const playerMuted = useAtomValue(playerMutedAtom)
 
-  const [audioMoments, setAudioMoments] = useAtom(audioMomentsAtom)
+  const audioMoments = useAtomValue(audioMomentsAtom)
+  const generateRandomAudioMoments = useSetAtom(generateRandomAudioMomentsAtom)
+  const removeActualAudioMoment = useSetAtom(removeActualAudioMomentAtom)
+  const resetAudioMoments = useResetAtom(audioMomentsAtom)
   const [audioMomentShouldUnpause, setAudioMomentShouldUnpause] = useAtom(
     audioMomentShouldUnpauseAtom,
   )
+  const audioMomentShouldPlay = useAtomValue(audioMomentShouldPlayAtom)
 
-  const timeLeft = useAtomValue(timeLeftAtom)
   const timerIsRunning = useAtomValue(timerIsRunningAtom)
   const startTimer = useSetAtom(startTimerAtom)
   const pauseTimer = useSetAtom(pauseTimerAtom)
@@ -78,21 +80,12 @@ export default function App() {
   function handleAudioOrVideoSourceInputChange(input: string | File): void {
     resetTimer()
     if (playerSource !== '') {
-      setAudioMoments(null)
+      resetAudioMoments()
       pausePlayer()
       resetPlayerCurrentTime()
     }
 
     setPlayerSource(input)
-  }
-
-  function handleRandomAudioMomentsGeneration(): void {
-    const oneHourRandomAudioMomentsGenerator =
-      new OneHourRandomAudioMomentsGenerator(playerDuration)
-    const generatedRandomAudioMoments =
-      oneHourRandomAudioMomentsGenerator.execute()
-
-    setAudioMoments(generatedRandomAudioMoments)
   }
 
   function handleStartTimer(): void {
@@ -112,7 +105,7 @@ export default function App() {
   }
 
   function handleStartOrPauseTimerButtonClick(): void {
-    if (!audioMoments) handleRandomAudioMomentsGeneration()
+    if (!audioMoments) generateRandomAudioMoments(playerDuration)
 
     if (timerIsRunning) {
       handlePauseTimer()
@@ -127,28 +120,20 @@ export default function App() {
 
     if (playerCurrentTime > 0) {
       resetPlayer()
-      setAudioMoments(null)
+      resetAudioMoments()
     }
   }
 
   useEffect(() => {
     function handleAudioMoments() {
-      if (!audioMoments) return
-
-      const nextMoment = audioMoments[0]
-      const secondsToNextMoment = ONE_HOUR_IN_SECONDS - nextMoment
-      const audioShouldPlay = timeLeft.getTotalSeconds() === secondsToNextMoment
-
-      if (audioShouldPlay) {
+      if (audioMomentShouldPlay) {
         resumePlayer()
-
-        const updatedAudioMoments = audioMoments.slice(1)
-        setAudioMoments(updatedAudioMoments)
+        removeActualAudioMoment()
       }
     }
 
     handleAudioMoments()
-  }, [audioMoments, resumePlayer, setAudioMoments, timeLeft])
+  }, [audioMomentShouldPlay, resumePlayer, removeActualAudioMoment])
 
   useEffect(() => {
     document.title = t('pageTitle')
