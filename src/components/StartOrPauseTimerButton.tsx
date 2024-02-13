@@ -3,6 +3,8 @@ import { timerIsRunningAtom, timerCanResetAtom } from '../atoms/timer'
 
 import { useTranslation } from 'react-i18next'
 
+import cn from '../lib/cn'
+
 import Button from './Button'
 
 interface StartOrPauseTimerButtonProps {
@@ -27,7 +29,13 @@ export default function StartOrPauseTimerButton({
   }
 
   return (
-    <Button className='bg-green-500' disabled={disabled} onClick={onClick}>
+    <Button
+      className={cn(
+        'bg-green-500 hover:bg-green-600 disabled:hover:bg-green-500',
+      )}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {startOrPauseTimerButtonText()}
     </Button>
   )
