@@ -14,6 +14,7 @@ test.describe.serial('Timer functionality with YouTube link', () => {
       name: /Começar|Pausar|Continuar/,
     })
     resetButton = page.getByRole('button', { name: 'Zerar' })
+    await page.getByLabel('Volume').fill('0.1')
 
     const youtubeLinkInput = page.getByPlaceholder('Link do youtube')
     await youtubeLinkInput.click()

@@ -26,6 +26,7 @@ test.describe.serial('File replacement', () => {
       name: /Começar|Pausar|Continuar/,
     })
     resetButton = page.getByRole('button', { name: 'Zerar' })
+    await page.getByLabel('Volume').fill('0.1')
     useAudioOrVideoFileInputButton = page.getByRole('button', {
       name: 'Usar arquivo de áudio ou vídeo',
     })

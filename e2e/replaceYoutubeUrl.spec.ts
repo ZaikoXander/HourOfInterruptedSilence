@@ -16,6 +16,7 @@ test.describe.serial('Youtube url replacement', () => {
     })
     resetButton = page.getByRole('button', { name: 'Zerar' })
     youtubeLinkInput = page.getByPlaceholder('Link do youtube')
+    await page.getByLabel('Volume').fill('0.1')
 
     await youtubeLinkInput.click()
     await youtubeLinkInput.fill(youtubeLink)
