@@ -10,7 +10,7 @@ interface AudioOrVideoInputProps {
 export default function AudioOrVideoSourceInput({
   onChange,
 }: AudioOrVideoInputProps) {
-  const { t } = useTranslation('', { keyPrefix: 'audioOrVideoSourceInput' })
+  const { t } = useTranslation('', { keyPrefix: 'app.audioOrVideoSourceInput' })
 
   return (
     <div className='flex flex-col gap-y-4'>

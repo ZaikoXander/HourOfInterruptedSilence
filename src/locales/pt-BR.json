@@ -2,10 +2,10 @@
   "app": {
     "pageTitle": "Hora de Silêncio Interrompido",
     "title": "Uma hora de silêncio interrompido",
-    "resetButton": "Zerar"
-  },
-  "audioOrVideoSourceInput": {
-    "audioOrVideoSourceInputSpan": "ou"
+    "resetButton": "Zerar",
+    "audioOrVideoSourceInput": {
+      "audioOrVideoSourceInputSpan": "ou"
+    }
   },
   "fileInputButton": {
     "fileInputButtonText": "Usar arquivo de áudio ou vídeo"
