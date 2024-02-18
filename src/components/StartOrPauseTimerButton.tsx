@@ -32,25 +32,28 @@ export default function StartOrPauseTimerButton({
 
   type LanguagesAbbreviations = 'en' | 'pt-BR' | 'pt'
 
-  const widthMapping: { [key in LanguagesAbbreviations]: number } = {
-    en: timerIsRunning ? 28 : timerCanReset ? 32 : 24,
-    'pt-BR': timerIsRunning ? 32 : 40,
-    pt: timerIsRunning ? 32 : 40,
+  const width24 = 'w-24'
+  const width28 = 'w-28'
+  const width32 = 'w-32'
+  const width40 = 'w-40'
+
+  const widthMapping: { [key in LanguagesAbbreviations]: string } = {
+    en: timerIsRunning ? width28 : timerCanReset ? width32 : width24,
+    'pt-BR': timerIsRunning ? width32 : width40,
+    pt: timerIsRunning ? width32 : width40,
   }
 
-  function getWidthClass(): string {
-    const width =
+  function getWidthClass(): string | undefined {
+    return (
       widthMapping[i18n.language as LanguagesAbbreviations] ||
-      (timerIsRunning ? 28 : timerCanReset ? 32 : 24)
-
-    return `w-${width}`
+      (timerIsRunning ? width28 : timerCanReset ? width32 : width24)
+    )
   }
 
   return (
     <Button
       className={cn(
-        'bg-green-500 transition-all hover:bg-green-600',
-        'disabled:hover:bg-green-500',
+        'bg-green-500 hover:bg-green-600 disabled:hover:bg-green-500',
         getWidthClass(),
       )}
       disabled={disabled}
