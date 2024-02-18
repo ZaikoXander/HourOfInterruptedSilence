@@ -29,7 +29,10 @@ test.describe.serial('Youtube url replacement', () => {
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -39,7 +42,9 @@ test.describe.serial('Youtube url replacement', () => {
     await youtubeLinkInput.click()
     await youtubeLinkInput.clear()
 
-    await page.waitForTimeout(1000)
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:55',
+    )
 
     await expect(timer).toHaveText('00:59:55')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -54,7 +59,9 @@ test.describe.serial('Youtube url replacement', () => {
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
-    await page.waitForTimeout(4000)
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:51',
+    )
 
     await expect(timer).toHaveText('00:59:51')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -62,6 +69,7 @@ test.describe.serial('Youtube url replacement', () => {
     await expect(resetButton).toBeEnabled()
 
     await resetButton.click()
+
     await expect(timer).toHaveText('01:00:00')
     await page.waitForTimeout(1000)
 
