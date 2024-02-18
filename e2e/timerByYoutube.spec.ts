@@ -110,12 +110,16 @@ test.describe('Timer functionality with YouTube link', () => {
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:50',
+    )
+
     await startOrPauseOrResumeButton.click()
 
-    await expect(timer).toHaveText('00:59:51')
+    await expect(timer).toHaveText('00:59:50')
     await page.waitForTimeout(1000)
 
-    await expect(timer).toHaveText('00:59:51')
+    await expect(timer).toHaveText('00:59:50')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Continuar')
     await expect(resetButton).toBeEnabled()
