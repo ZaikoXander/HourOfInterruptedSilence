@@ -248,6 +248,10 @@ test.describe('Testing timer functionality during source transitions', () => {
     const videoFileChooser = await videoFileChooserPromise
     await videoFileChooser.setFiles(videoFilePath)
 
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '01:00:00',
+    )
+
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Começar')
