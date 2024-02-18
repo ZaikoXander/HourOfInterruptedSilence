@@ -2,8 +2,7 @@ import { test, expect, type Locator } from '@playwright/test'
 import { fileURLToPath } from 'url'
 import path from 'path'
 
-test.describe
-  .serial('Testing timer functionality during source transitions', () => {
+test.describe('Testing timer functionality during source transitions', () => {
   let youtubeLinkInput: Locator
   let useAudioOrVideoFileInputButton: Locator
   let timer: Locator

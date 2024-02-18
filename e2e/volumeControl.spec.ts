@@ -1,6 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test'
 
-test.describe.serial('Volume control functionality', () => {
+test.describe('Volume control functionality', () => {
   let startOrPauseOrResumeButton: Locator
   let muteUnmuteButton: Locator
   let volumeControl: Locator

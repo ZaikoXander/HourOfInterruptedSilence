@@ -1,6 +1,6 @@
 import { test, expect, type Locator } from '@playwright/test'
 
-test.describe.serial('Youtube url replacement', () => {
+test.describe('Youtube url replacement', () => {
   let timer: Locator
   let startOrPauseOrResumeButton: Locator
   let resetButton: Locator

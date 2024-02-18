@@ -1,6 +1,6 @@
 import { test, expect, type Locator } from '@playwright/test'
 
-test.describe.serial('Timer functionality with YouTube link', () => {
+test.describe('Timer functionality with YouTube link', () => {
   let timer: Locator
   let startOrPauseOrResumeButton: Locator
   let resetButton: Locator
