@@ -62,10 +62,10 @@ test.describe('Testing timer functionality during source transitions', () => {
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(videoFilePath)
-    })
+    const videoFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const videoFileChooser = await videoFileChooserPromise
+    await videoFileChooser.setFiles(videoFilePath)
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -83,10 +83,10 @@ test.describe('Testing timer functionality during source transitions', () => {
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(audioFilePath)
-    })
+    const audioFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const audioFileChooser = await audioFileChooserPromise
+    await audioFileChooser.setFiles(audioFilePath)
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -123,10 +123,10 @@ test.describe('Testing timer functionality during source transitions', () => {
     await expect(startOrPauseOrResumeButton).toHaveText('Começar')
     await expect(resetButton).toBeDisabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(videoFilePath)
-    })
+    const videoFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const videoFileChooser = await videoFileChooserPromise
+    await videoFileChooser.setFiles(videoFilePath)
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -163,10 +163,10 @@ test.describe('Testing timer functionality during source transitions', () => {
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(audioFilePath)
-    })
+    const audioFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const audioFileChooser = await audioFileChooserPromise
+    await audioFileChooser.setFiles(audioFilePath)
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -203,10 +203,10 @@ test.describe('Testing timer functionality during source transitions', () => {
     await expect(startOrPauseOrResumeButton).toHaveText('Começar')
     await expect(resetButton).toBeDisabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(audioFilePath)
-    })
+    const audioFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const audioFileChooser = await audioFileChooserPromise
+    await audioFileChooser.setFiles(audioFilePath)
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -243,10 +243,10 @@ test.describe('Testing timer functionality during source transitions', () => {
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(videoFilePath)
-    })
+    const videoFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const videoFileChooser = await videoFileChooserPromise
+    await videoFileChooser.setFiles(videoFilePath)
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
