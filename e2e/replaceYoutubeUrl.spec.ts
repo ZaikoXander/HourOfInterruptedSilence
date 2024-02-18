@@ -51,19 +51,22 @@ test.describe('Youtube url replacement', () => {
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
-    await youtubeLinkInput.click()
     await youtubeLinkInput.fill(youtubeLink)
 
-    await expect(timer).toHaveText('00:59:55')
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:54',
+    )
+
+    await expect(timer).toHaveText('00:59:54')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
     await page.waitForFunction(
-      () => document.querySelector('time')?.textContent === '00:59:51',
+      () => document.querySelector('time')?.textContent === '00:59:50',
     )
 
-    await expect(timer).toHaveText('00:59:51')
+    await expect(timer).toHaveText('00:59:50')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
