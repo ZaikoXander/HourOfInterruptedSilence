@@ -16,9 +16,7 @@ test.describe('File replacement', () => {
   const audioFilePath = generateFilePathByFileName('test-guitar-riff-audio.mp3')
   const videoFilePath = generateFilePathByFileName('test-guitar-riff-audio.mp4')
 
-  test.beforeEach(async ({ page, browserName }) => {
-    if (browserName === 'chromium') test.skip()
-
+  test.beforeEach(async ({ page }) => {
     await page.goto('/')
 
     timer = page.getByRole('time')
@@ -87,7 +85,7 @@ test.describe('File replacement', () => {
       await expect(resetButton).toBeDisabled()
     })
 
-    test('video file replacement', async ({ page }) => {
+    test('video file replacement', async ({ page, browserName }) => {
       await expect(timer).toHaveText('01:00:00')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Começar')
@@ -113,14 +111,17 @@ test.describe('File replacement', () => {
       await page.waitForTimeout(1000)
 
       await expect(timer).toHaveText('01:00:00')
-      await expect(startOrPauseOrResumeButton).toBeEnabled()
+      if (browserName !== 'chromium')
+        await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Começar')
       await expect(resetButton).toBeDisabled()
     })
   })
 
   test.describe('with video file', () => {
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ page, browserName }) => {
+      if (browserName === 'chromium') test.skip()
+
       const videoFileChooserPromise = page.waitForEvent('filechooser')
       await useAudioOrVideoFileInputButton.click()
       const videoFileChooser = await videoFileChooserPromise
