@@ -28,22 +28,34 @@ test.describe.serial('Volume control functionality', () => {
     await expect(volumeControl).toHaveValue('0.5')
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:58',
+    )
 
     await expect(volumeControl).toHaveValue('0.5')
 
     await volumeControl.fill('0.25')
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(volumeControl).toHaveValue('0.25')
 
     await volumeControl.fill('1')
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:54',
+    )
 
     await expect(volumeControl).toHaveValue('1')
 
     await volumeControl.fill('0.75')
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:52',
+    )
 
     await expect(volumeControl).toHaveValue('0.75')
 
@@ -59,7 +71,10 @@ test.describe.serial('Volume control functionality', () => {
     await expect(volumeControl).toHaveValue('0.1')
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:58',
+    )
 
     await expect(volumeControl).toHaveValue('0.1')
 
@@ -77,7 +92,10 @@ test.describe.serial('Volume control functionality', () => {
     await expect(volumeControl).toHaveValue('0')
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:58',
+    )
 
     await expect(volumeControl).toHaveValue('0')
 
@@ -93,7 +111,10 @@ test.describe.serial('Volume control functionality', () => {
     await expect(volumeControl).toHaveValue('0')
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:58',
+    )
 
     await expect(volumeControl).toHaveValue('0')
 
@@ -107,17 +128,26 @@ test.describe.serial('Volume control functionality', () => {
     await expect(volumeControl).toHaveValue('0.5')
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:58',
+    )
 
     await expect(volumeControl).toHaveValue('0.5')
 
     await volumeControl.fill('0')
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(volumeControl).toHaveValue('0')
 
     await volumeControl.fill('0.5')
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:54',
+    )
 
     await expect(volumeControl).toHaveValue('0.5')
 
@@ -131,22 +161,34 @@ test.describe.serial('Volume control functionality', () => {
     await expect(volumeControl).toHaveValue('0.5')
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:58',
+    )
 
     await expect(volumeControl).toHaveValue('0.5')
 
     await volumeControl.fill('0.25')
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(volumeControl).toHaveValue('0.25')
 
     await muteUnmuteButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:54',
+    )
 
     await expect(volumeControl).toHaveValue('0')
 
     await muteUnmuteButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:52',
+    )
 
     await expect(volumeControl).toHaveValue('0.25')
 
@@ -158,17 +200,26 @@ test.describe.serial('Volume control functionality', () => {
     await expect(volumeControl).toHaveValue('0.5')
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:58',
+    )
 
     await expect(volumeControl).toHaveValue('0.5')
 
     await muteUnmuteButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(volumeControl).toHaveValue('0')
 
     await volumeControl.fill('0.75')
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:54',
+    )
 
     await expect(volumeControl).toHaveValue('0.75')
 
@@ -182,17 +233,26 @@ test.describe.serial('Volume control functionality', () => {
     await expect(volumeControl).toHaveValue('0.5')
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:58',
+    )
 
     await expect(volumeControl).toHaveValue('0.5')
 
     await volumeControl.fill('0')
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(volumeControl).toHaveValue('0')
 
     await muteUnmuteButton.click()
-    await page.waitForTimeout(2000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:54',
+    )
 
     await expect(volumeControl).toHaveValue('0.5')
 
