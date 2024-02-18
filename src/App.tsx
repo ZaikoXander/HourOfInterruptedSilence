@@ -167,7 +167,9 @@ export default function App() {
             onClick={handleStartOrPauseTimerButtonClick}
           />
           <Button
-            className='bg-red-500'
+            className={cn(
+              'bg-red-500 hover:bg-red-600 disabled:hover:bg-red-500',
+            )}
             disabled={!timerCanReset}
             onClick={handleResetTimerButtonClick}
           >

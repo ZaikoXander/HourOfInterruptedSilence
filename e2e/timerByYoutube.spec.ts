@@ -1,6 +1,6 @@
 import { test, expect, type Locator } from '@playwright/test'
 
-test.describe.serial('Timer functionality with YouTube link', () => {
+test.describe('Timer functionality with YouTube link', () => {
   let timer: Locator
   let startOrPauseOrResumeButton: Locator
   let resetButton: Locator
@@ -14,6 +14,7 @@ test.describe.serial('Timer functionality with YouTube link', () => {
       name: /Começar|Pausar|Continuar/,
     })
     resetButton = page.getByRole('button', { name: 'Zerar' })
+    await page.getByLabel('Volume').fill('0.1')
 
     const youtubeLinkInput = page.getByPlaceholder('Link do youtube')
     await youtubeLinkInput.click()
@@ -27,7 +28,10 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -35,6 +39,7 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await expect(resetButton).toBeEnabled()
 
     await startOrPauseOrResumeButton.click()
+
     await expect(timer).toHaveText('00:59:56')
     await page.waitForTimeout(1000)
 
@@ -44,7 +49,10 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await expect(resetButton).toBeEnabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(1000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:55',
+    )
 
     await expect(timer).toHaveText('00:59:55')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -52,6 +60,7 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await expect(resetButton).toBeEnabled()
 
     await resetButton.click()
+
     await expect(timer).toHaveText('01:00:00')
     await page.waitForTimeout(1000)
 
@@ -70,7 +79,10 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -78,6 +90,7 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await expect(resetButton).toBeEnabled()
 
     await resetButton.click()
+
     await expect(timer).toHaveText('01:00:00')
     await page.waitForTimeout(1000)
 
@@ -87,23 +100,32 @@ test.describe.serial('Timer functionality with YouTube link', () => {
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(9000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:51',
+    )
 
     await expect(timer).toHaveText('00:59:51')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
-    await startOrPauseOrResumeButton.click()
-    await expect(timer).toHaveText('00:59:51')
-    await page.waitForTimeout(2000)
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:50',
+    )
 
-    await expect(timer).toHaveText('00:59:51')
+    await startOrPauseOrResumeButton.click()
+
+    await expect(timer).toHaveText('00:59:50')
+    await page.waitForTimeout(1000)
+
+    await expect(timer).toHaveText('00:59:50')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Continuar')
     await expect(resetButton).toBeEnabled()
 
     await resetButton.click()
+
     await expect(timer).toHaveText('01:00:00')
     await page.waitForTimeout(1000)
 
