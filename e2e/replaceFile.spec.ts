@@ -2,7 +2,7 @@ import { test, expect, type Locator } from '@playwright/test'
 import { fileURLToPath } from 'url'
 import path from 'path'
 
-test.describe.serial('File replacement', () => {
+test.describe('File replacement', () => {
   let useAudioOrVideoFileInputButton: Locator
   let timer: Locator
   let startOrPauseOrResumeButton: Locator
@@ -16,9 +16,7 @@ test.describe.serial('File replacement', () => {
   const audioFilePath = generateFilePathByFileName('test-guitar-riff-audio.mp3')
   const videoFilePath = generateFilePathByFileName('test-guitar-riff-audio.mp4')
 
-  test.beforeEach(async ({ page, browserName }) => {
-    if (browserName === 'chromium') test.skip()
-
+  test.beforeEach(async ({ page }) => {
     await page.goto('/')
 
     timer = page.getByRole('time')
@@ -34,10 +32,10 @@ test.describe.serial('File replacement', () => {
 
   test.describe('with audio file', () => {
     test.beforeEach(async ({ page }) => {
-      page.on('filechooser', async (fileChooser) => {
-        await fileChooser.setFiles(audioFilePath)
-      })
+      const audioFileChooserPromise = page.waitForEvent('filechooser')
       await useAudioOrVideoFileInputButton.click()
+      const audioFileChooser = await audioFileChooserPromise
+      await audioFileChooser.setFiles(audioFilePath)
     })
 
     test('same audio file replacement', async ({ page }) => {
@@ -47,24 +45,29 @@ test.describe.serial('File replacement', () => {
       await expect(resetButton).toBeDisabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(4000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:56',
+      )
 
       await expect(timer).toHaveText('00:59:56')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
       await expect(resetButton).toBeEnabled()
 
-      page.on('filechooser', async (fileChooser) => {
-        await fileChooser.setFiles(audioFilePath)
-      })
+      const audioFileChooserPromise = page.waitForEvent('filechooser')
       await useAudioOrVideoFileInputButton.click()
+      const audioFileChooser = await audioFileChooserPromise
+      await audioFileChooser.setFiles(audioFilePath)
 
       await expect(timer).toHaveText('00:59:56')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
       await expect(resetButton).toBeEnabled()
 
-      await page.waitForTimeout(4000)
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:52',
+      )
 
       await expect(timer).toHaveText('00:59:52')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -72,6 +75,7 @@ test.describe.serial('File replacement', () => {
       await expect(resetButton).toBeEnabled()
 
       await resetButton.click()
+
       await expect(timer).toHaveText('01:00:00')
       await page.waitForTimeout(1000)
 
@@ -81,38 +85,47 @@ test.describe.serial('File replacement', () => {
       await expect(resetButton).toBeDisabled()
     })
 
-    test('video file replacement', async ({ page }) => {
+    test('video file replacement', async ({ page, browserName }) => {
       await expect(timer).toHaveText('01:00:00')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Começar')
       await expect(resetButton).toBeDisabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(4000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:56',
+      )
 
       await expect(timer).toHaveText('00:59:56')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
       await expect(resetButton).toBeEnabled()
 
-      page.on('filechooser', async (fileChooser) => {
-        await fileChooser.setFiles(videoFilePath)
-      })
+      const videoFileChooserPromise = page.waitForEvent('filechooser')
       await useAudioOrVideoFileInputButton.click()
+      const videoFileChooser = await videoFileChooserPromise
+      await videoFileChooser.setFiles(videoFilePath)
 
       await expect(timer).toHaveText('01:00:00')
-      await expect(startOrPauseOrResumeButton).toBeEnabled()
+      await page.waitForTimeout(1000)
+
+      await expect(timer).toHaveText('01:00:00')
+      if (browserName !== 'chromium')
+        await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Começar')
       await expect(resetButton).toBeDisabled()
     })
   })
 
   test.describe('with video file', () => {
-    test.beforeEach(async ({ page }) => {
-      page.on('filechooser', async (fileChooser) => {
-        await fileChooser.setFiles(videoFilePath)
-      })
+    test.beforeEach(async ({ page, browserName }) => {
+      if (browserName === 'chromium') test.skip()
+
+      const videoFileChooserPromise = page.waitForEvent('filechooser')
       await useAudioOrVideoFileInputButton.click()
+      const videoFileChooser = await videoFileChooserPromise
+      await videoFileChooser.setFiles(videoFilePath)
     })
 
     test('same video file replacement', async ({ page }) => {
@@ -122,24 +135,29 @@ test.describe.serial('File replacement', () => {
       await expect(resetButton).toBeDisabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(4000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:56',
+      )
 
       await expect(timer).toHaveText('00:59:56')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
       await expect(resetButton).toBeEnabled()
 
-      page.on('filechooser', async (fileChooser) => {
-        await fileChooser.setFiles(videoFilePath)
-      })
+      const videoFileChooserPromise = page.waitForEvent('filechooser')
       await useAudioOrVideoFileInputButton.click()
+      const videoFileChooser = await videoFileChooserPromise
+      await videoFileChooser.setFiles(videoFilePath)
 
       await expect(timer).toHaveText('00:59:56')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
       await expect(resetButton).toBeEnabled()
 
-      await page.waitForTimeout(4000)
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:52',
+      )
 
       await expect(timer).toHaveText('00:59:52')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -147,6 +165,7 @@ test.describe.serial('File replacement', () => {
       await expect(resetButton).toBeEnabled()
 
       await resetButton.click()
+
       await expect(timer).toHaveText('01:00:00')
       await page.waitForTimeout(1000)
 
@@ -163,17 +182,23 @@ test.describe.serial('File replacement', () => {
       await expect(resetButton).toBeDisabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(4000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:56',
+      )
 
       await expect(timer).toHaveText('00:59:56')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
       await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
       await expect(resetButton).toBeEnabled()
 
-      page.on('filechooser', async (fileChooser) => {
-        await fileChooser.setFiles(audioFilePath)
-      })
+      const audioFileChooserPromise = page.waitForEvent('filechooser')
       await useAudioOrVideoFileInputButton.click()
+      const audioFileChooser = await audioFileChooserPromise
+      await audioFileChooser.setFiles(audioFilePath)
+
+      await expect(timer).toHaveText('01:00:00')
+      await page.waitForTimeout(1000)
 
       await expect(timer).toHaveText('01:00:00')
       await expect(startOrPauseOrResumeButton).toBeEnabled()

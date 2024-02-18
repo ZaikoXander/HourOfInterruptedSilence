@@ -2,8 +2,7 @@ import { test, expect, type Locator } from '@playwright/test'
 import { fileURLToPath } from 'url'
 import path from 'path'
 
-test.describe
-  .serial('Testing timer functionality during source transitions', () => {
+test.describe('Testing timer functionality during source transitions', () => {
   let youtubeLinkInput: Locator
   let useAudioOrVideoFileInputButton: Locator
   let timer: Locator
@@ -53,17 +52,20 @@ test.describe
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(videoFilePath)
-    })
+    const videoFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const videoFileChooser = await videoFileChooserPromise
+    await videoFileChooser.setFiles(videoFilePath)
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -71,17 +73,20 @@ test.describe
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(audioFilePath)
-    })
+    const audioFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const audioFileChooser = await audioFileChooserPromise
+    await audioFileChooser.setFiles(audioFilePath)
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -89,7 +94,10 @@ test.describe
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -97,6 +105,8 @@ test.describe
     await expect(resetButton).toBeEnabled()
 
     await resetButton.click()
+
+    await expect(timer).toHaveText('01:00:00')
     await page.waitForTimeout(1000)
 
     await expect(timer).toHaveText('01:00:00')
@@ -113,10 +123,10 @@ test.describe
     await expect(startOrPauseOrResumeButton).toHaveText('Começar')
     await expect(resetButton).toBeDisabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(videoFilePath)
-    })
+    const videoFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const videoFileChooser = await videoFileChooserPromise
+    await videoFileChooser.setFiles(videoFilePath)
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -124,7 +134,10 @@ test.describe
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -140,17 +153,20 @@ test.describe
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(audioFilePath)
-    })
+    const audioFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const audioFileChooser = await audioFileChooserPromise
+    await audioFileChooser.setFiles(audioFilePath)
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -158,7 +174,10 @@ test.describe
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -166,6 +185,8 @@ test.describe
     await expect(resetButton).toBeEnabled()
 
     await resetButton.click()
+
+    await expect(timer).toHaveText('01:00:00')
     await page.waitForTimeout(1000)
 
     await expect(timer).toHaveText('01:00:00')
@@ -182,10 +203,10 @@ test.describe
     await expect(startOrPauseOrResumeButton).toHaveText('Começar')
     await expect(resetButton).toBeDisabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(audioFilePath)
-    })
+    const audioFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const audioFileChooser = await audioFileChooserPromise
+    await audioFileChooser.setFiles(audioFilePath)
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -193,7 +214,10 @@ test.describe
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -209,17 +233,24 @@ test.describe
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
     await expect(startOrPauseOrResumeButton).toHaveText('Pausar')
     await expect(resetButton).toBeEnabled()
 
-    page.on('filechooser', async (fileChooser) => {
-      await fileChooser.setFiles(videoFilePath)
-    })
+    const videoFileChooserPromise = page.waitForEvent('filechooser')
     await useAudioOrVideoFileInputButton.click()
+    const videoFileChooser = await videoFileChooserPromise
+    await videoFileChooser.setFiles(videoFilePath)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '01:00:00',
+    )
 
     await expect(timer).toHaveText('01:00:00')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -227,7 +258,10 @@ test.describe
     await expect(resetButton).toBeDisabled()
 
     await startOrPauseOrResumeButton.click()
-    await page.waitForTimeout(4000)
+
+    await page.waitForFunction(
+      () => document.querySelector('time')?.textContent === '00:59:56',
+    )
 
     await expect(timer).toHaveText('00:59:56')
     await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -235,6 +269,8 @@ test.describe
     await expect(resetButton).toBeEnabled()
 
     await resetButton.click()
+
+    await expect(timer).toHaveText('01:00:00')
     await page.waitForTimeout(1000)
 
     await expect(timer).toHaveText('01:00:00')
