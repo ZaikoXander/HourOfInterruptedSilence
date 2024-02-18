@@ -49,7 +49,10 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeDisabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(2000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:58',
+      )
 
       await expect(timer).toHaveText('00:59:58')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -57,6 +60,7 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await startOrPauseOrResumeButton.click()
+
       await expect(timer).toHaveText('00:59:58')
       await page.waitForTimeout(1000)
 
@@ -66,7 +70,10 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(1000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:57',
+      )
 
       await expect(timer).toHaveText('00:59:57')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -74,6 +81,7 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await resetButton.click()
+
       await expect(timer).toHaveText('01:00:00')
       await page.waitForTimeout(1000)
 
@@ -92,7 +100,10 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeDisabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(2000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:58',
+      )
 
       await expect(timer).toHaveText('00:59:58')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -100,6 +111,7 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await resetButton.click()
+
       await expect(timer).toHaveText('01:00:00')
       await page.waitForTimeout(1000)
 
@@ -109,7 +121,10 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeDisabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(7000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:53',
+      )
 
       await expect(timer).toHaveText('00:59:53')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -117,8 +132,9 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await startOrPauseOrResumeButton.click()
+
       await expect(timer).toHaveText('00:59:53')
-      await page.waitForTimeout(2000)
+      await page.waitForTimeout(1000)
 
       await expect(timer).toHaveText('00:59:53')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -126,6 +142,7 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await resetButton.click()
+
       await expect(timer).toHaveText('01:00:00')
       await page.waitForTimeout(1000)
 
@@ -153,7 +170,10 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeDisabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(4000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:56',
+      )
 
       await expect(timer).toHaveText('00:59:56')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -161,6 +181,7 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await startOrPauseOrResumeButton.click()
+
       await expect(timer).toHaveText('00:59:56')
       await page.waitForTimeout(1000)
 
@@ -170,7 +191,10 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(1000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:55',
+      )
 
       await expect(timer).toHaveText('00:59:55')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -178,6 +202,7 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await resetButton.click()
+
       await expect(timer).toHaveText('01:00:00')
       await page.waitForTimeout(1000)
 
@@ -196,7 +221,10 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeDisabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(4000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:56',
+      )
 
       await expect(timer).toHaveText('00:59:56')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -204,6 +232,7 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await resetButton.click()
+
       await expect(timer).toHaveText('01:00:00')
       await page.waitForTimeout(1000)
 
@@ -213,7 +242,10 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeDisabled()
 
       await startOrPauseOrResumeButton.click()
-      await page.waitForTimeout(9000)
+
+      await page.waitForFunction(
+        () => document.querySelector('time')?.textContent === '00:59:51',
+      )
 
       await expect(timer).toHaveText('00:59:51')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -221,8 +253,9 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await startOrPauseOrResumeButton.click()
+
       await expect(timer).toHaveText('00:59:51')
-      await page.waitForTimeout(2000)
+      await page.waitForTimeout(1000)
 
       await expect(timer).toHaveText('00:59:51')
       await expect(startOrPauseOrResumeButton).toBeEnabled()
@@ -230,6 +263,7 @@ test.describe.serial('Timer functionality with audio or video file', () => {
       await expect(resetButton).toBeEnabled()
 
       await resetButton.click()
+
       await expect(timer).toHaveText('01:00:00')
       await page.waitForTimeout(1000)
 
