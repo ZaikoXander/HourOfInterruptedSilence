@@ -49,7 +49,8 @@ export default function StartOrPauseTimerButton({
   return (
     <Button
       className={cn(
-        'bg-green-500 hover:bg-green-600 disabled:hover:bg-green-500',
+        'bg-green-500 transition-all hover:bg-green-600',
+        'disabled:hover:bg-green-500',
         getWidthClass(),
       )}
       disabled={disabled}
