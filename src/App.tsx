@@ -42,6 +42,8 @@ import { useTranslation } from 'react-i18next'
 
 import { FaGithub } from 'react-icons/fa'
 
+import type { InputFile } from './types'
+
 export default function App() {
   const {
     player,
@@ -77,19 +79,30 @@ export default function App() {
 
   const { t, i18n } = useTranslation('', { keyPrefix: 'app' })
 
-  function handleAudioOrVideoSourceInputChange(input: string | File): void {
+  function handleAudioOrVideoSourceInputChange(
+    input: string | InputFile,
+  ): void {
     resetTimer()
+
     if (playerSource !== '') {
       resetAudioMoments()
       pausePlayer()
       resetPlayerCurrentTime()
     }
 
-    setPlayerSource(input)
+    if (typeof input === 'string') {
+      setPlayerSource(input)
+    } else {
+      setPlayerSource({
+        src: input,
+        type: input.type as 'audio/object' | 'video/object',
+      })
+    }
   }
 
   function handleStartTimer(): void {
     startTimer()
+
     if (playerPaused && audioMomentShouldUnpause) {
       resumePlayer()
       setAudioMomentShouldUnpause(false)
@@ -98,6 +111,7 @@ export default function App() {
 
   function handlePauseTimer(): void {
     pauseTimer()
+
     if (!playerPaused) {
       pausePlayer()
       setAudioMomentShouldUnpause(true)

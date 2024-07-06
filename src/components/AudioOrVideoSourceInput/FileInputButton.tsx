@@ -5,10 +5,12 @@ import Button from '../Button'
 
 import { useTranslation } from 'react-i18next'
 
-const fileAtom = atom<File | undefined>(undefined)
+import type { InputFile } from '../../types'
+
+const fileAtom = atom<InputFile | undefined>(undefined)
 
 interface FileInputButtonProps {
-  onChange?: (file: File) => void
+  onChange?: (file: InputFile) => void
 }
 
 export default function FileInputButton({ onChange }: FileInputButtonProps) {
@@ -16,7 +18,9 @@ export default function FileInputButton({ onChange }: FileInputButtonProps) {
   const [file, setFile] = useAtom(fileAtom)
   const { t } = useTranslation('', { keyPrefix: 'fileInputButton' })
 
-  function isNewFileEqualToPrevious(newFile: File | undefined): boolean {
+  function isNewFileEqualToPrevious(
+    newFile: InputFile | null | undefined,
+  ): boolean {
     if (!newFile || !file) return false
 
     return (
@@ -27,7 +31,7 @@ export default function FileInputButton({ onChange }: FileInputButtonProps) {
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const newFile = event.target.files?.[0]
+    const newFile: InputFile | null | undefined = event.target.files?.item(0)
     if (!newFile || isNewFileEqualToPrevious(newFile)) return
 
     setFile(newFile)

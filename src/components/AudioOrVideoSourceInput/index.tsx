@@ -3,8 +3,10 @@ import YoutubeVideoUrlInput from './YoutubeVideoUrlInput'
 
 import { useTranslation } from 'react-i18next'
 
+import type { InputFile } from '../../types'
+
 interface AudioOrVideoInputProps {
-  onChange?: (input: string | File) => void
+  onChange?: (input: string | InputFile) => void
 }
 
 export default function AudioOrVideoSourceInput({
