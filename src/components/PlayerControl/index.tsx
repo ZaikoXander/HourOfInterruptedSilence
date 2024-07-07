@@ -10,7 +10,7 @@ import {
 } from '../../atoms/audioMoments'
 import { timeTickingEffect } from '../../atoms/timer'
 
-import { type MediaPlayerInstance } from '@vidstack/react'
+import type { MediaPlayerInstance } from '@vidstack/react'
 
 import Timer from './Timer'
 import VolumeControl from './VolumeControl'
