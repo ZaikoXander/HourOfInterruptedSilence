@@ -1,27 +1,32 @@
-import { atom, useAtom } from 'jotai'
+import { useState } from 'react'
 
 import { useTranslation } from 'react-i18next'
 
-import cn from '../../lib/cn'
-
-import extractYoutubeVideoId from '../../utils/extractYoutubeVideoId'
-
-const sourceAtom = atom<string>('')
+import cn from '../../../lib/cn'
 
 interface YoutubeVideoUrlInputProps {
   onChange?: (youtubeVideoUrl: string) => void
 }
 
+function extractYoutubeVideoIdByUrl(url: string): string | null {
+  const regex: RegExp =
+    /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/
+  const match: RegExpMatchArray | null = url.match(regex)
+
+  return match ? match[1] : null
+}
+
 export default function YoutubeVideoUrlInput({
   onChange,
 }: YoutubeVideoUrlInputProps) {
-  const [source, setSource] = useAtom(sourceAtom)
+  const [source, setSource] = useState<string>('')
 
   const { t } = useTranslation('', { keyPrefix: 'youtubeVideoUrlInput' })
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const url = event.target.value
-    const id = extractYoutubeVideoId(url)
+    const id = extractYoutubeVideoIdByUrl(url)
+
     if (!id) return
 
     const newSource = `youtube/${id}`

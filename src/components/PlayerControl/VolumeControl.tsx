@@ -1,11 +1,20 @@
+import type { ChangeEvent } from 'react'
+
 import { useAtom } from 'jotai'
-import { playerMutedAtom, playerVolumeAtom } from '../atoms/player'
+
+import { playerMutedAtom, playerVolumeAtom } from '../../atoms/player'
 
 import { FaVolumeMute, FaVolumeUp } from 'react-icons/fa'
 
 export default function VolumeControl() {
-  const [playerVolume, changePlayerVolume] = useAtom(playerVolumeAtom)
   const [playerMuted, setPlayerMuted] = useAtom(playerMutedAtom)
+  const [playerVolume, changePlayerVolume] = useAtom(playerVolumeAtom)
+
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const valueToNumber = parseFloat(event.target.value)
+
+    changePlayerVolume(valueToNumber)
+  }
 
   return (
     <div className='flex gap-2'>
@@ -25,7 +34,7 @@ export default function VolumeControl() {
         max='1'
         step='0.01'
         value={playerMuted ? 0 : playerVolume}
-        onChange={(e) => changePlayerVolume(parseFloat(e.target.value))}
+        onChange={handleInputChange}
         className='w-16 accent-blue-500'
         aria-labelledby='volume-control'
       />

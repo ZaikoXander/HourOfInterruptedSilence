@@ -6,7 +6,7 @@ interface ButtonProps {
   children?: ReactNode
   className?: string
   disabled?: boolean
-  onClick?: () => void
+  onClick?: VoidFunction
 }
 
 export default function Button({
