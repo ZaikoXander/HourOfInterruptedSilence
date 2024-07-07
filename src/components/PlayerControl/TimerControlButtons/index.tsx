@@ -1,27 +1,28 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useResetAtom } from 'jotai/utils'
 
-import { playerAtom, playerSourceAtom } from '../../../atoms/player'
+import { playerSourceAtom } from '../../../atoms/player'
 import {
   pausePlayerAtom,
   resetPlayerCurrentTimeAtom,
 } from '../../../atoms/player/remote'
 import { resetTimerAtom, timerCanResetAtom } from '../../../atoms/timer'
+import {
+  playerCurrentTimeAtom,
+  playerPausedAtom,
+} from '../../../atoms/player/store'
 import { audioMomentsAtom } from '../../../atoms/audioMoments'
 
 import StartOrPauseTimerButton from './StartOrPauseTimerButton'
 import Button from '../../Button'
 
-import { useMediaStore } from '@vidstack/react'
-
 import { useTranslation } from 'react-i18next'
 
 export default function TimerControlButtons() {
-  const player = useAtomValue(playerAtom)
   const [playerSource, setPlayerSource] = useAtom(playerSourceAtom)
 
-  const { paused: playerPaused, currentTime: playerCurrentTime } =
-    useMediaStore(player)
+  const playerPaused = useAtomValue(playerPausedAtom)
+  const playerCurrentTime = useAtomValue(playerCurrentTimeAtom)
 
   const pausePlayer = useSetAtom(pausePlayerAtom)
   const resetPlayerCurrentTime = useSetAtom(resetPlayerCurrentTimeAtom)

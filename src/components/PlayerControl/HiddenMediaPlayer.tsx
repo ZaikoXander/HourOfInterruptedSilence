@@ -6,9 +6,16 @@ import {
   playerVolumeAtom,
   playerMutedAtom,
 } from '../../atoms/player'
-import { pausePlayerAtom, resetPlayerCurrentTimeAtom } from '../../atoms/player/remote'
+import {
+  pausePlayerAtom,
+  resetPlayerCurrentTimeAtom,
+} from '../../atoms/player/remote'
+import {
+  playerCurrentTimeAtom,
+  playerPausedAtom,
+} from '../../atoms/player/store'
 
-import { MediaPlayer, MediaProvider, useMediaStore } from '@vidstack/react'
+import { MediaPlayer, MediaProvider } from '@vidstack/react'
 import '@vidstack/react/player/styles/base.css'
 
 export default function HiddenMediaPlayer() {
@@ -20,8 +27,8 @@ export default function HiddenMediaPlayer() {
   const pausePlayer = useSetAtom(pausePlayerAtom)
   const resetPlayerCurrentTime = useSetAtom(resetPlayerCurrentTimeAtom)
 
-  const { paused: playerPaused, currentTime: playerCurrentTime } =
-    useMediaStore(player)
+  const playerPaused = useAtomValue(playerPausedAtom)
+  const playerCurrentTime = useAtomValue(playerCurrentTimeAtom)
 
   async function resetPlayer(): Promise<void> {
     const playerReset = playerPaused && playerCurrentTime === 0

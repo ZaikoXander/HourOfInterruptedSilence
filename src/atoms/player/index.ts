@@ -2,8 +2,6 @@ import type { RefObject } from 'react'
 
 import { atom } from 'jotai'
 
-import { storeAtom } from './store'
-
 import type { MediaPlayerInstance } from '@vidstack/react'
 
 const volumeAtFifthPercent = 0.5
@@ -26,10 +24,4 @@ const playerVolumeAtom = atom(
   },
 )
 
-export {
-  playerAtom,
-  playerSourceAtom,
-  playerMutedAtom,
-  playerVolumeAtom,
-  storeAtom,
-}
+export { playerAtom, playerSourceAtom, playerMutedAtom, playerVolumeAtom }
