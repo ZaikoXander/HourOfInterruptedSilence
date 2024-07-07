@@ -1,12 +1,12 @@
 import { useState } from 'react'
 
+import { useSetAtom } from 'jotai'
+
+import handlePlayerSourceChangeAtom from './handlePlayerSourceChange'
+
 import { useTranslation } from 'react-i18next'
 
 import cn from '../../../lib/cn'
-
-interface YoutubeVideoUrlInputProps {
-  onChange?: (youtubeVideoUrl: string) => void
-}
 
 function extractYoutubeVideoIdByUrl(url: string): string | null {
   const regex: RegExp =
@@ -16,10 +16,9 @@ function extractYoutubeVideoIdByUrl(url: string): string | null {
   return match ? match[1] : null
 }
 
-export default function YoutubeVideoUrlInput({
-  onChange,
-}: YoutubeVideoUrlInputProps) {
+export default function YoutubeVideoUrlInput() {
   const [source, setSource] = useState<string>('')
+  const handlePlayerSourceChange = useSetAtom(handlePlayerSourceChangeAtom)
 
   const { t } = useTranslation('', { keyPrefix: 'youtubeVideoUrlInput' })
 
@@ -33,7 +32,7 @@ export default function YoutubeVideoUrlInput({
     if (newSource === source) return
 
     setSource(newSource)
-    onChange?.(newSource)
+    handlePlayerSourceChange(newSource)
   }
 
   return (

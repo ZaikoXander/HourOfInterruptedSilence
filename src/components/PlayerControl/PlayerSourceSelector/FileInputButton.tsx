@@ -1,17 +1,18 @@
 import { useRef, useState } from 'react'
 
+import { useSetAtom } from 'jotai'
+
+import handlePlayerSourceChangeAtom from './handlePlayerSourceChange'
+
 import Button from '../../Button'
 
 import { useTranslation } from 'react-i18next'
 
-interface FileInputButtonProps {
-  onChange?: (file: File) => void
-}
-
-export default function FileInputButton({ onChange }: FileInputButtonProps) {
+export default function FileInputButton() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   const [file, setFile] = useState<File | undefined>(undefined)
+  const handlePlayerSourceChange = useSetAtom(handlePlayerSourceChangeAtom)
 
   const { t } = useTranslation('', { keyPrefix: 'fileInputButton' })
 
@@ -29,7 +30,7 @@ export default function FileInputButton({ onChange }: FileInputButtonProps) {
     if (!newFile || (file && isNewFileEqualToPrevious(newFile))) return
 
     setFile(newFile)
-    onChange?.(newFile)
+    handlePlayerSourceChange(newFile)
   }
 
   function triggerFileInput() {
