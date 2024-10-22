@@ -2,9 +2,9 @@ import { atom } from 'jotai'
 import { atomWithReset, RESET } from 'jotai/utils'
 import { atomEffect } from 'jotai-effect'
 
-import { ONE_HOUR_IN_SECONDS } from '../constants'
+import formattedTimeAtom from './formattedTimeAtom'
 
-const ONE_MINUTE_IN_SECONDS = 60
+import { ONE_HOUR_IN_SECONDS } from '../../constants'
 
 const timerTotalSecondsAtom = atomWithReset(ONE_HOUR_IN_SECONDS)
 const decreaseTimerTotalSecondsAtom = atom(null, (_get, set) => {
@@ -13,17 +13,6 @@ const decreaseTimerTotalSecondsAtom = atom(null, (_get, set) => {
     (previousTimerTotalSeconds) => previousTimerTotalSeconds - 1,
   )
 })
-const timerHoursAtom = atom((get) =>
-  Math.floor(get(timerTotalSecondsAtom) / ONE_HOUR_IN_SECONDS),
-)
-const timerMinutesAtom = atom((get) =>
-  Math.floor(
-    (get(timerTotalSecondsAtom) % ONE_HOUR_IN_SECONDS) / ONE_MINUTE_IN_SECONDS,
-  ),
-)
-const timerSecondsAtom = atom(
-  (get) => get(timerTotalSecondsAtom) % ONE_MINUTE_IN_SECONDS,
-)
 
 const timerIsRunningAtom = atom<boolean>(false)
 
@@ -55,9 +44,7 @@ const timeTickingEffect = atomEffect((get, set) => {
 
 export {
   timerTotalSecondsAtom,
-  timerHoursAtom,
-  timerMinutesAtom,
-  timerSecondsAtom,
+  formattedTimeAtom,
   timerIsRunningAtom,
   startTimerAtom,
   pauseTimerAtom,

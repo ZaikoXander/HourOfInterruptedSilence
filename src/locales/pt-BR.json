@@ -4,8 +4,8 @@
     "title": "Uma hora de silêncio interrompido",
     "resetButton": "Zerar"
   },
-  "audioOrVideoSourceInput": {
-    "audioOrVideoSourceInputSpan": "ou"
+  "playerSourceSelector": {
+    "playerSourceSelectorSpan": "ou"
   },
   "fileInputButton": {
     "fileInputButtonText": "Usar arquivo de áudio ou vídeo"
